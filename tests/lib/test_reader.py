@@ -1,13 +1,13 @@
 
-import yaml.reader
+import hughml.reader
 import codecs
 
 def _run_reader(data, verbose):
     try:
-        stream = yaml.reader.Reader(data)
+        stream = hughml.reader.Reader(data)
         while stream.peek() != u'\0':
             stream.forward()
-    except yaml.reader.ReaderError, exc:
+    except hughml.reader.ReaderError, exc:
         if verbose:
             print exc
     else:

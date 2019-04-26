@@ -44,17 +44,17 @@ def parse_arguments(args):
     if '--verbose' in args:
         verbose = True
         args.remove('--verbose')
-    if 'YAML_TEST_VERBOSE' in os.environ:
+    if 'hughml_TEST_VERBOSE' in os.environ:
         verbose = True
     include_functions = []
     if args:
         include_functions.append(args.pop(0))
-    if 'YAML_TEST_FUNCTIONS' in os.environ:
-        include_functions.extend(os.environ['YAML_TEST_FUNCTIONS'].split())
+    if 'hughml_TEST_FUNCTIONS' in os.environ:
+        include_functions.extend(os.environ['hughml_TEST_FUNCTIONS'].split())
     include_filenames = []
     include_filenames.extend(args)
-    if 'YAML_TEST_FILENAMES' in os.environ:
-        include_filenames.extend(os.environ['YAML_TEST_FILENAMES'].split())
+    if 'hughml_TEST_FILENAMES' in os.environ:
+        include_filenames.extend(os.environ['hughml_TEST_FILENAMES'].split())
     return include_functions, include_filenames, verbose
 
 def execute(function, filenames, verbose):

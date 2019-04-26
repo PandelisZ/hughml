@@ -1,9 +1,9 @@
 
 """
-yaml.py
+hughml.py
 
-Lexer for YAML, a human-friendly data serialization language
-(http://yaml.org/).
+Lexer for hughml, a human-friendly data serialization language
+(http://hughml.org/).
 
 Written by Kirill Simonov <xi@resolvent.net>.
 
@@ -15,14 +15,14 @@ from pygments.lexer import  \
 from pygments.token import  \
         Text, Comment, Punctuation, Name, Literal
 
-__all__ = ['YAMLLexer']
+__all__ = ['hughmlLexer']
 
 
-class YAMLLexerContext(LexerContext):
-    """Indentation context for the YAML lexer."""
+class hughmlLexerContext(LexerContext):
+    """Indentation context for the hughml lexer."""
 
     def __init__(self, *args, **kwds):
-        super(YAMLLexerContext, self).__init__(*args, **kwds)
+        super(hughmlLexerContext, self).__init__(*args, **kwds)
         self.indent_stack = []
         self.indent = -1
         self.next_indent = 0
@@ -154,13 +154,13 @@ def parse_plain_scalar_indent(TokenClass):
     return callback
 
 
-class YAMLLexer(ExtendedRegexLexer):
-    """Lexer for the YAML language."""
+class hughmlLexer(ExtendedRegexLexer):
+    """Lexer for the hughml language."""
 
-    name = 'YAML'
-    aliases = ['yaml']
-    filenames = ['*.yaml', '*.yml']
-    mimetypes = ['text/x-yaml']
+    name = 'hughml'
+    aliases = ['hughml']
+    filenames = ['*.hughml', '*.yml']
+    mimetypes = ['text/x-hughml']
 
     tokens = {
 
@@ -172,9 +172,9 @@ class YAMLLexer(ExtendedRegexLexer):
             (r'\n+', Text.Break),
             # a comment
             (r'#[^\n]*', Comment.Single),
-            # the '%YAML' directive
-            (r'^%YAML(?=[ ]|$)', reset_indent(Name.Directive),
-                'yaml-directive'),
+            # the '%hughml' directive
+            (r'^%hughml(?=[ ]|$)', reset_indent(Name.Directive),
+                'hughml-directive'),
             # the %TAG directive
             (r'^%TAG(?=[ ]|$)', reset_indent(Name.Directive),
                 'tag-directive'),
@@ -197,8 +197,8 @@ class YAMLLexer(ExtendedRegexLexer):
             (r'\n', Text.Break, '#pop:2'),
         ],
 
-        # the %YAML directive
-        'yaml-directive': [
+        # the %hughml directive
+        'hughml-directive': [
             # the version number
             (r'([ ]+)([0-9]+\.[0-9]+)',
                 bygroups(Text.Blank, Literal.Version), 'ignored-line'),
@@ -425,7 +425,7 @@ class YAMLLexer(ExtendedRegexLexer):
 
     def get_tokens_unprocessed(self, text=None, context=None):
         if context is None:
-            context = YAMLLexerContext(text, 0)
-        return super(YAMLLexer, self).get_tokens_unprocessed(text, context)
+            context = hughmlLexerContext(text, 0)
+        return super(hughmlLexer, self).get_tokens_unprocessed(text, context)
 
 

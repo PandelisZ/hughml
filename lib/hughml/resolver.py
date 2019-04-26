@@ -6,32 +6,32 @@ from nodes import *
 
 import re
 
-class ResolverError(YAMLError):
+class ResolverError(hughmlError):
     pass
 
 class BaseResolver(object):
 
-    DEFAULT_SCALAR_TAG = u'tag:yaml.org,2002:str'
-    DEFAULT_SEQUENCE_TAG = u'tag:yaml.org,2002:seq'
-    DEFAULT_MAPPING_TAG = u'tag:yaml.org,2002:map'
+    DEFAULT_SCALAR_TAG = u'tag:hughml.org,2002:str'
+    DEFAULT_SEQUENCE_TAG = u'tag:hughml.org,2002:seq'
+    DEFAULT_MAPPING_TAG = u'tag:hughml.org,2002:map'
 
-    yaml_implicit_resolvers = {}
-    yaml_path_resolvers = {}
+    hughml_implicit_resolvers = {}
+    hughml_path_resolvers = {}
 
     def __init__(self):
         self.resolver_exact_paths = []
         self.resolver_prefix_paths = []
 
     def add_implicit_resolver(cls, tag, regexp, first):
-        if not 'yaml_implicit_resolvers' in cls.__dict__:
+        if not 'hughml_implicit_resolvers' in cls.__dict__:
             implicit_resolvers = {}
-            for key in cls.yaml_implicit_resolvers:
-                implicit_resolvers[key] = cls.yaml_implicit_resolvers[key][:]
-            cls.yaml_implicit_resolvers = implicit_resolvers
+            for key in cls.hughml_implicit_resolvers:
+                implicit_resolvers[key] = cls.hughml_implicit_resolvers[key][:]
+            cls.hughml_implicit_resolvers = implicit_resolvers
         if first is None:
             first = [None]
         for ch in first:
-            cls.yaml_implicit_resolvers.setdefault(ch, []).append((tag, regexp))
+            cls.hughml_implicit_resolvers.setdefault(ch, []).append((tag, regexp))
     add_implicit_resolver = classmethod(add_implicit_resolver)
 
     def add_path_resolver(cls, tag, path, kind=None):
@@ -47,8 +47,8 @@ class BaseResolver(object):
         # a mapping value that corresponds to a scalar key which content is
         # equal to the `index_check` value.  An integer `index_check` matches
         # against a sequence value with the index equal to `index_check`.
-        if not 'yaml_path_resolvers' in cls.__dict__:
-            cls.yaml_path_resolvers = cls.yaml_path_resolvers.copy()
+        if not 'hughml_path_resolvers' in cls.__dict__:
+            cls.hughml_path_resolvers = cls.hughml_path_resolvers.copy()
         new_path = []
         for element in path:
             if isinstance(element, (list, tuple)):
@@ -85,11 +85,11 @@ class BaseResolver(object):
         elif kind not in [ScalarNode, SequenceNode, MappingNode]    \
                 and kind is not None:
             raise ResolverError("Invalid node kind: %s" % kind)
-        cls.yaml_path_resolvers[tuple(new_path), kind] = tag
+        cls.hughml_path_resolvers[tuple(new_path), kind] = tag
     add_path_resolver = classmethod(add_path_resolver)
 
     def descend_resolver(self, current_node, current_index):
-        if not self.yaml_path_resolvers:
+        if not self.hughml_path_resolvers:
             return
         exact_paths = {}
         prefix_paths = []
@@ -101,18 +101,18 @@ class BaseResolver(object):
                     if len(path) > depth:
                         prefix_paths.append((path, kind))
                     else:
-                        exact_paths[kind] = self.yaml_path_resolvers[path, kind]
+                        exact_paths[kind] = self.hughml_path_resolvers[path, kind]
         else:
-            for path, kind in self.yaml_path_resolvers:
+            for path, kind in self.hughml_path_resolvers:
                 if not path:
-                    exact_paths[kind] = self.yaml_path_resolvers[path, kind]
+                    exact_paths[kind] = self.hughml_path_resolvers[path, kind]
                 else:
                     prefix_paths.append((path, kind))
         self.resolver_exact_paths.append(exact_paths)
         self.resolver_prefix_paths.append(prefix_paths)
 
     def ascend_resolver(self):
-        if not self.yaml_path_resolvers:
+        if not self.hughml_path_resolvers:
             return
         self.resolver_exact_paths.pop()
         self.resolver_prefix_paths.pop()
@@ -143,15 +143,15 @@ class BaseResolver(object):
     def resolve(self, kind, value, implicit):
         if kind is ScalarNode and implicit[0]:
             if value == u'':
-                resolvers = self.yaml_implicit_resolvers.get(u'', [])
+                resolvers = self.hughml_implicit_resolvers.get(u'', [])
             else:
-                resolvers = self.yaml_implicit_resolvers.get(value[0], [])
-            resolvers += self.yaml_implicit_resolvers.get(None, [])
+                resolvers = self.hughml_implicit_resolvers.get(value[0], [])
+            resolvers += self.hughml_implicit_resolvers.get(None, [])
             for tag, regexp in resolvers:
                 if regexp.match(value):
                     return tag
             implicit = implicit[1]
-        if self.yaml_path_resolvers:
+        if self.hughml_path_resolvers:
             exact_paths = self.resolver_exact_paths[-1]
             if kind in exact_paths:
                 return exact_paths[kind]
@@ -168,14 +168,14 @@ class Resolver(BaseResolver):
     pass
 
 Resolver.add_implicit_resolver(
-        u'tag:yaml.org,2002:bool',
+        u'tag:hughml.org,2002:bool',
         re.compile(ur'''^(?:yes|Yes|YES|no|No|NO
                     |true|True|TRUE|false|False|FALSE
                     |on|On|ON|off|Off|OFF)$''', re.X),
         list(u'yYnNtTfFoO'))
 
 Resolver.add_implicit_resolver(
-        u'tag:yaml.org,2002:float',
+        u'tag:hughml.org,2002:float',
         re.compile(ur'''^(?:[-+]?(?:[0-9][0-9_]*)\.[0-9_]*(?:[eE][-+][0-9]+)?
                     |\.[0-9_]+(?:[eE][-+][0-9]+)?
                     |[-+]?[0-9][0-9_]*(?::[0-5]?[0-9])+\.[0-9_]*
@@ -184,7 +184,7 @@ Resolver.add_implicit_resolver(
         list(u'-+0123456789.'))
 
 Resolver.add_implicit_resolver(
-        u'tag:yaml.org,2002:int',
+        u'tag:hughml.org,2002:int',
         re.compile(ur'''^(?:[-+]?0b[0-1_]+
                     |[-+]?0[0-7_]+
                     |[-+]?(?:0|[1-9][0-9_]*)
@@ -193,19 +193,19 @@ Resolver.add_implicit_resolver(
         list(u'-+0123456789'))
 
 Resolver.add_implicit_resolver(
-        u'tag:yaml.org,2002:merge',
+        u'tag:hughml.org,2002:merge',
         re.compile(ur'^(?:<<)$'),
         [u'<'])
 
 Resolver.add_implicit_resolver(
-        u'tag:yaml.org,2002:null',
+        u'tag:hughml.org,2002:null',
         re.compile(ur'''^(?: ~
                     |null|Null|NULL
                     | )$''', re.X),
         [u'~', u'n', u'N', u''])
 
 Resolver.add_implicit_resolver(
-        u'tag:yaml.org,2002:timestamp',
+        u'tag:hughml.org,2002:timestamp',
         re.compile(ur'''^(?:[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]
                     |[0-9][0-9][0-9][0-9] -[0-9][0-9]? -[0-9][0-9]?
                      (?:[Tt]|[ \t]+)[0-9][0-9]?
@@ -214,14 +214,14 @@ Resolver.add_implicit_resolver(
         list(u'0123456789'))
 
 Resolver.add_implicit_resolver(
-        u'tag:yaml.org,2002:value',
+        u'tag:hughml.org,2002:value',
         re.compile(ur'^(?:=)$'),
         [u'='])
 
 # The following resolver is only for documentation purposes. It cannot work
 # because plain scalars cannot start with '!', '&', or '*'.
 Resolver.add_implicit_resolver(
-        u'tag:yaml.org,2002:yaml',
+        u'tag:hughml.org,2002:hughml',
         re.compile(ur'^(?:!|&|\*)$'),
         list(u'!&*'))
 

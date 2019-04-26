@@ -1,5 +1,5 @@
 
-import yaml
+import hughml
 import test_constructor
 import pprint
 
@@ -10,9 +10,9 @@ def test_representer_types(code_filename, verbose=False):
             native1 = test_constructor._load_code(open(code_filename, 'rb').read())
             native2 = None
             try:
-                output = yaml.dump(native1, Dumper=test_constructor.MyDumper,
+                output = hughml.dump(native1, Dumper=test_constructor.MyDumper,
                             allow_unicode=allow_unicode, encoding=encoding)
-                native2 = yaml.load(output, Loader=test_constructor.MyLoader)
+                native2 = hughml.load(output, Loader=test_constructor.MyLoader)
                 try:
                     if native1 == native2:
                         continue

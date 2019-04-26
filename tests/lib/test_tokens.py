@@ -1,5 +1,5 @@
 
-import yaml
+import hughml
 import pprint
 
 # Tokens mnemonic:
@@ -22,32 +22,32 @@ import pprint
 # value:                :
 
 _replaces = {
-    yaml.DirectiveToken: '%',
-    yaml.DocumentStartToken: '---',
-    yaml.DocumentEndToken: '...',
-    yaml.AliasToken: '*',
-    yaml.AnchorToken: '&',
-    yaml.TagToken: '!',
-    yaml.ScalarToken: '_',
-    yaml.BlockSequenceStartToken: '[[',
-    yaml.BlockMappingStartToken: '{{',
-    yaml.BlockEndToken: ']}',
-    yaml.FlowSequenceStartToken: '[',
-    yaml.FlowSequenceEndToken: ']',
-    yaml.FlowMappingStartToken: '{',
-    yaml.FlowMappingEndToken: '}',
-    yaml.BlockEntryToken: ',',
-    yaml.FlowEntryToken: ',',
-    yaml.KeyToken: '?',
-    yaml.ValueToken: ':',
+    hughml.DirectiveToken: '%',
+    hughml.DocumentStartToken: '---',
+    hughml.DocumentEndToken: '...',
+    hughml.AliasToken: '*',
+    hughml.AnchorToken: '&',
+    hughml.TagToken: '!',
+    hughml.ScalarToken: '_',
+    hughml.BlockSequenceStartToken: '[[',
+    hughml.BlockMappingStartToken: '{{',
+    hughml.BlockEndToken: ']}',
+    hughml.FlowSequenceStartToken: '[',
+    hughml.FlowSequenceEndToken: ']',
+    hughml.FlowMappingStartToken: '{',
+    hughml.FlowMappingEndToken: '}',
+    hughml.BlockEntryToken: ',',
+    hughml.FlowEntryToken: ',',
+    hughml.KeyToken: '?',
+    hughml.ValueToken: ':',
 }
 
 def test_tokens(data_filename, tokens_filename, verbose=False):
     tokens1 = []
     tokens2 = open(tokens_filename, 'rb').read().split()
     try:
-        for token in yaml.scan(open(data_filename, 'rb')):
-            if not isinstance(token, (yaml.StreamStartToken, yaml.StreamEndToken)):
+        for token in hughml.scan(open(data_filename, 'rb')):
+            if not isinstance(token, (hughml.StreamStartToken, hughml.StreamEndToken)):
                 tokens1.append(_replaces[token.__class__])
     finally:
         if verbose:
@@ -63,7 +63,7 @@ def test_scanner(data_filename, canonical_filename, verbose=False):
     for filename in [data_filename, canonical_filename]:
         tokens = []
         try:
-            for token in yaml.scan(open(filename, 'rb')):
+            for token in hughml.scan(open(filename, 'rb')):
                 tokens.append(token.__class__.__name__)
         finally:
             if verbose:

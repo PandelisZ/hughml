@@ -1,9 +1,9 @@
 
-import yaml
+import hughml
 
 def get_version_string():
     cdef char *value
-    value = yaml_get_version_string()
+    value = hughml_get_version_string()
     if PY_MAJOR_VERSION < 3:
         return value
     else:
@@ -11,55 +11,55 @@ def get_version_string():
 
 def get_version():
     cdef int major, minor, patch
-    yaml_get_version(&major, &minor, &patch)
+    hughml_get_version(&major, &minor, &patch)
     return (major, minor, patch)
 
-#Mark = yaml.error.Mark
-YAMLError = yaml.error.YAMLError
-ReaderError = yaml.reader.ReaderError
-ScannerError = yaml.scanner.ScannerError
-ParserError = yaml.parser.ParserError
-ComposerError = yaml.composer.ComposerError
-ConstructorError = yaml.constructor.ConstructorError
-EmitterError = yaml.emitter.EmitterError
-SerializerError = yaml.serializer.SerializerError
-RepresenterError = yaml.representer.RepresenterError
+#Mark = hughml.error.Mark
+hughmlError = hughml.error.hughmlError
+ReaderError = hughml.reader.ReaderError
+ScannerError = hughml.scanner.ScannerError
+ParserError = hughml.parser.ParserError
+ComposerError = hughml.composer.ComposerError
+ConstructorError = hughml.constructor.ConstructorError
+EmitterError = hughml.emitter.EmitterError
+SerializerError = hughml.serializer.SerializerError
+RepresenterError = hughml.representer.RepresenterError
 
-StreamStartToken = yaml.tokens.StreamStartToken
-StreamEndToken = yaml.tokens.StreamEndToken
-DirectiveToken = yaml.tokens.DirectiveToken
-DocumentStartToken = yaml.tokens.DocumentStartToken
-DocumentEndToken = yaml.tokens.DocumentEndToken
-BlockSequenceStartToken = yaml.tokens.BlockSequenceStartToken
-BlockMappingStartToken = yaml.tokens.BlockMappingStartToken
-BlockEndToken = yaml.tokens.BlockEndToken
-FlowSequenceStartToken = yaml.tokens.FlowSequenceStartToken
-FlowMappingStartToken = yaml.tokens.FlowMappingStartToken
-FlowSequenceEndToken = yaml.tokens.FlowSequenceEndToken
-FlowMappingEndToken = yaml.tokens.FlowMappingEndToken
-KeyToken = yaml.tokens.KeyToken
-ValueToken = yaml.tokens.ValueToken
-BlockEntryToken = yaml.tokens.BlockEntryToken
-FlowEntryToken = yaml.tokens.FlowEntryToken
-AliasToken = yaml.tokens.AliasToken
-AnchorToken = yaml.tokens.AnchorToken
-TagToken = yaml.tokens.TagToken
-ScalarToken = yaml.tokens.ScalarToken
+StreamStartToken = hughml.tokens.StreamStartToken
+StreamEndToken = hughml.tokens.StreamEndToken
+DirectiveToken = hughml.tokens.DirectiveToken
+DocumentStartToken = hughml.tokens.DocumentStartToken
+DocumentEndToken = hughml.tokens.DocumentEndToken
+BlockSequenceStartToken = hughml.tokens.BlockSequenceStartToken
+BlockMappingStartToken = hughml.tokens.BlockMappingStartToken
+BlockEndToken = hughml.tokens.BlockEndToken
+FlowSequenceStartToken = hughml.tokens.FlowSequenceStartToken
+FlowMappingStartToken = hughml.tokens.FlowMappingStartToken
+FlowSequenceEndToken = hughml.tokens.FlowSequenceEndToken
+FlowMappingEndToken = hughml.tokens.FlowMappingEndToken
+KeyToken = hughml.tokens.KeyToken
+ValueToken = hughml.tokens.ValueToken
+BlockEntryToken = hughml.tokens.BlockEntryToken
+FlowEntryToken = hughml.tokens.FlowEntryToken
+AliasToken = hughml.tokens.AliasToken
+AnchorToken = hughml.tokens.AnchorToken
+TagToken = hughml.tokens.TagToken
+ScalarToken = hughml.tokens.ScalarToken
 
-StreamStartEvent = yaml.events.StreamStartEvent
-StreamEndEvent = yaml.events.StreamEndEvent
-DocumentStartEvent = yaml.events.DocumentStartEvent
-DocumentEndEvent = yaml.events.DocumentEndEvent
-AliasEvent = yaml.events.AliasEvent
-ScalarEvent = yaml.events.ScalarEvent
-SequenceStartEvent = yaml.events.SequenceStartEvent
-SequenceEndEvent = yaml.events.SequenceEndEvent
-MappingStartEvent = yaml.events.MappingStartEvent
-MappingEndEvent = yaml.events.MappingEndEvent
+StreamStartEvent = hughml.events.StreamStartEvent
+StreamEndEvent = hughml.events.StreamEndEvent
+DocumentStartEvent = hughml.events.DocumentStartEvent
+DocumentEndEvent = hughml.events.DocumentEndEvent
+AliasEvent = hughml.events.AliasEvent
+ScalarEvent = hughml.events.ScalarEvent
+SequenceStartEvent = hughml.events.SequenceStartEvent
+SequenceEndEvent = hughml.events.SequenceEndEvent
+MappingStartEvent = hughml.events.MappingStartEvent
+MappingEndEvent = hughml.events.MappingEndEvent
 
-ScalarNode = yaml.nodes.ScalarNode
-SequenceNode = yaml.nodes.SequenceNode
-MappingNode = yaml.nodes.MappingNode
+ScalarNode = hughml.nodes.ScalarNode
+SequenceNode = hughml.nodes.SequenceNode
+MappingNode = hughml.nodes.MappingNode
 
 cdef class Mark:
     cdef readonly object name
@@ -86,10 +86,10 @@ cdef class Mark:
                 % (self.name, self.line+1, self.column+1)
         return where
 
-#class YAMLError(Exception):
+#class hughmlError(Exception):
 #    pass
 #
-#class MarkedYAMLError(YAMLError):
+#class MarkedhughmlError(hughmlError):
 #
 #    def __init__(self, context=None, context_mark=None,
 #            problem=None, problem_mark=None, note=None):
@@ -117,7 +117,7 @@ cdef class Mark:
 #            lines.append(self.note)
 #        return '\n'.join(lines)
 #
-#class ReaderError(YAMLError):
+#class ReaderError(hughmlError):
 #
 #    def __init__(self, name, position, character, encoding, reason):
 #        self.name = name
@@ -138,13 +138,13 @@ cdef class Mark:
 #                    % (ord(self.character), self.reason,
 #                            self.name, self.position)
 #
-#class ScannerError(MarkedYAMLError):
+#class ScannerError(MarkedhughmlError):
 #    pass
 #
-#class ParserError(MarkedYAMLError):
+#class ParserError(MarkedhughmlError):
 #    pass
 #
-#class EmitterError(YAMLError):
+#class EmitterError(hughmlError):
 #    pass
 #
 #cdef class Token:
@@ -246,8 +246,8 @@ cdef class Mark:
 
 cdef class CParser:
 
-    cdef yaml_parser_t parser
-    cdef yaml_event_t parsed_event
+    cdef hughml_parser_t parser
+    cdef hughml_event_t parsed_event
 
     cdef object stream
     cdef object stream_name
@@ -261,9 +261,9 @@ cdef class CParser:
 
     def __init__(self, stream):
         cdef is_readable
-        if yaml_parser_initialize(&self.parser) == 0:
+        if hughml_parser_initialize(&self.parser) == 0:
             raise MemoryError
-        self.parsed_event.type = YAML_NO_EVENT
+        self.parsed_event.type = hughml_NO_EVENT
         is_readable = 1
         try:
             stream.read
@@ -282,7 +282,7 @@ cdef class CParser:
             self.stream_cache = None
             self.stream_cache_len = 0
             self.stream_cache_pos = 0
-            yaml_parser_set_input(&self.parser, input_handler, <void *>self)
+            hughml_parser_set_input(&self.parser, input_handler, <void *>self)
         else:
             if PyUnicode_CheckExact(stream) != 0:
                 stream = PyUnicode_AsUTF8String(stream)
@@ -302,30 +302,30 @@ cdef class CParser:
                 else:
                     raise TypeError(u"a string or stream input is required")
             self.stream = stream
-            yaml_parser_set_input_string(&self.parser, PyString_AS_STRING(stream), PyString_GET_SIZE(stream))
+            hughml_parser_set_input_string(&self.parser, PyString_AS_STRING(stream), PyString_GET_SIZE(stream))
         self.current_token = None
         self.current_event = None
         self.anchors = {}
 
     def __dealloc__(self):
-        yaml_parser_delete(&self.parser)
-        yaml_event_delete(&self.parsed_event)
+        hughml_parser_delete(&self.parser)
+        hughml_event_delete(&self.parsed_event)
 
     def dispose(self):
         pass
 
     cdef object _parser_error(self):
-        if self.parser.error == YAML_MEMORY_ERROR:
+        if self.parser.error == hughml_MEMORY_ERROR:
             return MemoryError
-        elif self.parser.error == YAML_READER_ERROR:
+        elif self.parser.error == hughml_READER_ERROR:
             if PY_MAJOR_VERSION < 3:
                 return ReaderError(self.stream_name, self.parser.problem_offset,
                         self.parser.problem_value, '?', self.parser.problem)
             else:
                 return ReaderError(self.stream_name, self.parser.problem_offset,
                         self.parser.problem_value, u'?', PyUnicode_FromString(self.parser.problem))
-        elif self.parser.error == YAML_SCANNER_ERROR    \
-                or self.parser.error == YAML_PARSER_ERROR:
+        elif self.parser.error == hughml_SCANNER_ERROR    \
+                or self.parser.error == hughml_PARSER_ERROR:
             context_mark = None
             problem_mark = None
             if self.parser.context != NULL:
@@ -348,7 +348,7 @@ cdef class CParser:
                 problem = self.parser.problem
             else:
                 problem = PyUnicode_FromString(self.parser.problem)
-            if self.parser.error == YAML_SCANNER_ERROR:
+            if self.parser.error == hughml_SCANNER_ERROR:
                 return ScannerError(context, context_mark, problem, problem_mark)
             else:
                 return ParserError(context, context_mark, problem, problem_mark)
@@ -358,32 +358,32 @@ cdef class CParser:
             raise ValueError(u"no parser error")
 
     def raw_scan(self):
-        cdef yaml_token_t token
+        cdef hughml_token_t token
         cdef int done
         cdef int count
         count = 0
         done = 0
         while done == 0:
-            if yaml_parser_scan(&self.parser, &token) == 0:
+            if hughml_parser_scan(&self.parser, &token) == 0:
                 error = self._parser_error()
                 raise error
-            if token.type == YAML_NO_TOKEN:
+            if token.type == hughml_NO_TOKEN:
                 done = 1
             else:
                 count = count+1
-            yaml_token_delete(&token)
+            hughml_token_delete(&token)
         return count
 
     cdef object _scan(self):
-        cdef yaml_token_t token
-        if yaml_parser_scan(&self.parser, &token) == 0:
+        cdef hughml_token_t token
+        if hughml_parser_scan(&self.parser, &token) == 0:
             error = self._parser_error()
             raise error
         token_object = self._token_to_object(&token)
-        yaml_token_delete(&token)
+        hughml_token_delete(&token)
         return token_object
 
-    cdef object _token_to_object(self, yaml_token_t *token):
+    cdef object _token_to_object(self, hughml_token_t *token):
         start_mark = Mark(self.stream_name,
                 token.start_mark.index,
                 token.start_mark.line,
@@ -394,83 +394,83 @@ cdef class CParser:
                 token.end_mark.line,
                 token.end_mark.column,
                 None, None)
-        if token.type == YAML_NO_TOKEN:
+        if token.type == hughml_NO_TOKEN:
             return None
-        elif token.type == YAML_STREAM_START_TOKEN:
+        elif token.type == hughml_STREAM_START_TOKEN:
             encoding = None
-            if token.data.stream_start.encoding == YAML_UTF8_ENCODING:
+            if token.data.stream_start.encoding == hughml_UTF8_ENCODING:
                 if self.unicode_source == 0:
                     encoding = u"utf-8"
-            elif token.data.stream_start.encoding == YAML_UTF16LE_ENCODING:
+            elif token.data.stream_start.encoding == hughml_UTF16LE_ENCODING:
                 encoding = u"utf-16-le"
-            elif token.data.stream_start.encoding == YAML_UTF16BE_ENCODING:
+            elif token.data.stream_start.encoding == hughml_UTF16BE_ENCODING:
                 encoding = u"utf-16-be"
             return StreamStartToken(start_mark, end_mark, encoding)
-        elif token.type == YAML_STREAM_END_TOKEN:
+        elif token.type == hughml_STREAM_END_TOKEN:
             return StreamEndToken(start_mark, end_mark)
-        elif token.type == YAML_VERSION_DIRECTIVE_TOKEN:
-            return DirectiveToken(u"YAML",
+        elif token.type == hughml_VERSION_DIRECTIVE_TOKEN:
+            return DirectiveToken(u"hughml",
                     (token.data.version_directive.major,
                         token.data.version_directive.minor),
                     start_mark, end_mark)
-        elif token.type == YAML_TAG_DIRECTIVE_TOKEN:
+        elif token.type == hughml_TAG_DIRECTIVE_TOKEN:
             handle = PyUnicode_FromString(token.data.tag_directive.handle)
             prefix = PyUnicode_FromString(token.data.tag_directive.prefix)
             return DirectiveToken(u"TAG", (handle, prefix),
                     start_mark, end_mark)
-        elif token.type == YAML_DOCUMENT_START_TOKEN:
+        elif token.type == hughml_DOCUMENT_START_TOKEN:
             return DocumentStartToken(start_mark, end_mark)
-        elif token.type == YAML_DOCUMENT_END_TOKEN:
+        elif token.type == hughml_DOCUMENT_END_TOKEN:
             return DocumentEndToken(start_mark, end_mark)
-        elif token.type == YAML_BLOCK_SEQUENCE_START_TOKEN:
+        elif token.type == hughml_BLOCK_SEQUENCE_START_TOKEN:
             return BlockSequenceStartToken(start_mark, end_mark)
-        elif token.type == YAML_BLOCK_MAPPING_START_TOKEN:
+        elif token.type == hughml_BLOCK_MAPPING_START_TOKEN:
             return BlockMappingStartToken(start_mark, end_mark)
-        elif token.type == YAML_BLOCK_END_TOKEN:
+        elif token.type == hughml_BLOCK_END_TOKEN:
             return BlockEndToken(start_mark, end_mark)
-        elif token.type == YAML_FLOW_SEQUENCE_START_TOKEN:
+        elif token.type == hughml_FLOW_SEQUENCE_START_TOKEN:
             return FlowSequenceStartToken(start_mark, end_mark)
-        elif token.type == YAML_FLOW_SEQUENCE_END_TOKEN:
+        elif token.type == hughml_FLOW_SEQUENCE_END_TOKEN:
             return FlowSequenceEndToken(start_mark, end_mark)
-        elif token.type == YAML_FLOW_MAPPING_START_TOKEN:
+        elif token.type == hughml_FLOW_MAPPING_START_TOKEN:
             return FlowMappingStartToken(start_mark, end_mark)
-        elif token.type == YAML_FLOW_MAPPING_END_TOKEN:
+        elif token.type == hughml_FLOW_MAPPING_END_TOKEN:
             return FlowMappingEndToken(start_mark, end_mark)
-        elif token.type == YAML_BLOCK_ENTRY_TOKEN:
+        elif token.type == hughml_BLOCK_ENTRY_TOKEN:
             return BlockEntryToken(start_mark, end_mark)
-        elif token.type == YAML_FLOW_ENTRY_TOKEN:
+        elif token.type == hughml_FLOW_ENTRY_TOKEN:
             return FlowEntryToken(start_mark, end_mark)
-        elif token.type == YAML_KEY_TOKEN:
+        elif token.type == hughml_KEY_TOKEN:
             return KeyToken(start_mark, end_mark)
-        elif token.type == YAML_VALUE_TOKEN:
+        elif token.type == hughml_VALUE_TOKEN:
             return ValueToken(start_mark, end_mark)
-        elif token.type == YAML_ALIAS_TOKEN:
+        elif token.type == hughml_ALIAS_TOKEN:
             value = PyUnicode_FromString(token.data.alias.value)
             return AliasToken(value, start_mark, end_mark)
-        elif token.type == YAML_ANCHOR_TOKEN:
+        elif token.type == hughml_ANCHOR_TOKEN:
             value = PyUnicode_FromString(token.data.anchor.value)
             return AnchorToken(value, start_mark, end_mark)
-        elif token.type == YAML_TAG_TOKEN:
+        elif token.type == hughml_TAG_TOKEN:
             handle = PyUnicode_FromString(token.data.tag.handle)
             suffix = PyUnicode_FromString(token.data.tag.suffix)
             if not handle:
                 handle = None
             return TagToken((handle, suffix), start_mark, end_mark)
-        elif token.type == YAML_SCALAR_TOKEN:
+        elif token.type == hughml_SCALAR_TOKEN:
             value = PyUnicode_DecodeUTF8(token.data.scalar.value,
                     token.data.scalar.length, 'strict')
             plain = False
             style = None
-            if token.data.scalar.style == YAML_PLAIN_SCALAR_STYLE:
+            if token.data.scalar.style == hughml_PLAIN_SCALAR_STYLE:
                 plain = True
                 style = u''
-            elif token.data.scalar.style == YAML_SINGLE_QUOTED_SCALAR_STYLE:
+            elif token.data.scalar.style == hughml_SINGLE_QUOTED_SCALAR_STYLE:
                 style = u'\''
-            elif token.data.scalar.style == YAML_DOUBLE_QUOTED_SCALAR_STYLE:
+            elif token.data.scalar.style == hughml_DOUBLE_QUOTED_SCALAR_STYLE:
                 style = u'"'
-            elif token.data.scalar.style == YAML_LITERAL_SCALAR_STYLE:
+            elif token.data.scalar.style == hughml_LITERAL_SCALAR_STYLE:
                 style = u'|'
-            elif token.data.scalar.style == YAML_FOLDED_SCALAR_STYLE:
+            elif token.data.scalar.style == hughml_FOLDED_SCALAR_STYLE:
                 style = u'>'
             return ScalarToken(value, plain,
                     start_mark, end_mark, style)
@@ -507,33 +507,33 @@ cdef class CParser:
         return False
 
     def raw_parse(self):
-        cdef yaml_event_t event
+        cdef hughml_event_t event
         cdef int done
         cdef int count
         count = 0
         done = 0
         while done == 0:
-            if yaml_parser_parse(&self.parser, &event) == 0:
+            if hughml_parser_parse(&self.parser, &event) == 0:
                 error = self._parser_error()
                 raise error
-            if event.type == YAML_NO_EVENT:
+            if event.type == hughml_NO_EVENT:
                 done = 1
             else:
                 count = count+1
-            yaml_event_delete(&event)
+            hughml_event_delete(&event)
         return count
 
     cdef object _parse(self):
-        cdef yaml_event_t event
-        if yaml_parser_parse(&self.parser, &event) == 0:
+        cdef hughml_event_t event
+        if hughml_parser_parse(&self.parser, &event) == 0:
             error = self._parser_error()
             raise error
         event_object = self._event_to_object(&event)
-        yaml_event_delete(&event)
+        hughml_event_delete(&event)
         return event_object
 
-    cdef object _event_to_object(self, yaml_event_t *event):
-        cdef yaml_tag_directive_t *tag_directive
+    cdef object _event_to_object(self, hughml_event_t *event):
+        cdef hughml_tag_directive_t *tag_directive
         start_mark = Mark(self.stream_name,
                 event.start_mark.index,
                 event.start_mark.line,
@@ -544,21 +544,21 @@ cdef class CParser:
                 event.end_mark.line,
                 event.end_mark.column,
                 None, None)
-        if event.type == YAML_NO_EVENT:
+        if event.type == hughml_NO_EVENT:
             return None
-        elif event.type == YAML_STREAM_START_EVENT:
+        elif event.type == hughml_STREAM_START_EVENT:
             encoding = None
-            if event.data.stream_start.encoding == YAML_UTF8_ENCODING:
+            if event.data.stream_start.encoding == hughml_UTF8_ENCODING:
                 if self.unicode_source == 0:
                     encoding = u"utf-8"
-            elif event.data.stream_start.encoding == YAML_UTF16LE_ENCODING:
+            elif event.data.stream_start.encoding == hughml_UTF16LE_ENCODING:
                 encoding = u"utf-16-le"
-            elif event.data.stream_start.encoding == YAML_UTF16BE_ENCODING:
+            elif event.data.stream_start.encoding == hughml_UTF16BE_ENCODING:
                 encoding = u"utf-16-be"
             return StreamStartEvent(start_mark, end_mark, encoding)
-        elif event.type == YAML_STREAM_END_EVENT:
+        elif event.type == hughml_STREAM_END_EVENT:
             return StreamEndEvent(start_mark, end_mark)
-        elif event.type == YAML_DOCUMENT_START_EVENT:
+        elif event.type == hughml_DOCUMENT_START_EVENT:
             explicit = False
             if event.data.document_start.implicit == 0:
                 explicit = True
@@ -577,15 +577,15 @@ cdef class CParser:
                     tag_directive = tag_directive+1
             return DocumentStartEvent(start_mark, end_mark,
                     explicit, version, tags)
-        elif event.type == YAML_DOCUMENT_END_EVENT:
+        elif event.type == hughml_DOCUMENT_END_EVENT:
             explicit = False
             if event.data.document_end.implicit == 0:
                 explicit = True
             return DocumentEndEvent(start_mark, end_mark, explicit)
-        elif event.type == YAML_ALIAS_EVENT:
+        elif event.type == hughml_ALIAS_EVENT:
             anchor = PyUnicode_FromString(event.data.alias.anchor)
             return AliasEvent(anchor, start_mark, end_mark)
-        elif event.type == YAML_SCALAR_EVENT:
+        elif event.type == hughml_SCALAR_EVENT:
             anchor = None
             if event.data.scalar.anchor != NULL:
                 anchor = PyUnicode_FromString(event.data.scalar.anchor)
@@ -601,20 +601,20 @@ cdef class CParser:
             if event.data.scalar.quoted_implicit == 1:
                 quoted_implicit = True
             style = None
-            if event.data.scalar.style == YAML_PLAIN_SCALAR_STYLE:
+            if event.data.scalar.style == hughml_PLAIN_SCALAR_STYLE:
                 style = u''
-            elif event.data.scalar.style == YAML_SINGLE_QUOTED_SCALAR_STYLE:
+            elif event.data.scalar.style == hughml_SINGLE_QUOTED_SCALAR_STYLE:
                 style = u'\''
-            elif event.data.scalar.style == YAML_DOUBLE_QUOTED_SCALAR_STYLE:
+            elif event.data.scalar.style == hughml_DOUBLE_QUOTED_SCALAR_STYLE:
                 style = u'"'
-            elif event.data.scalar.style == YAML_LITERAL_SCALAR_STYLE:
+            elif event.data.scalar.style == hughml_LITERAL_SCALAR_STYLE:
                 style = u'|'
-            elif event.data.scalar.style == YAML_FOLDED_SCALAR_STYLE:
+            elif event.data.scalar.style == hughml_FOLDED_SCALAR_STYLE:
                 style = u'>'
             return ScalarEvent(anchor, tag,
                     (plain_implicit, quoted_implicit),
                     value, start_mark, end_mark, style)
-        elif event.type == YAML_SEQUENCE_START_EVENT:
+        elif event.type == hughml_SEQUENCE_START_EVENT:
             anchor = None
             if event.data.sequence_start.anchor != NULL:
                 anchor = PyUnicode_FromString(event.data.sequence_start.anchor)
@@ -625,13 +625,13 @@ cdef class CParser:
             if event.data.sequence_start.implicit == 1:
                 implicit = True
             flow_style = None
-            if event.data.sequence_start.style == YAML_FLOW_SEQUENCE_STYLE:
+            if event.data.sequence_start.style == hughml_FLOW_SEQUENCE_STYLE:
                 flow_style = True
-            elif event.data.sequence_start.style == YAML_BLOCK_SEQUENCE_STYLE:
+            elif event.data.sequence_start.style == hughml_BLOCK_SEQUENCE_STYLE:
                 flow_style = False
             return SequenceStartEvent(anchor, tag, implicit,
                     start_mark, end_mark, flow_style)
-        elif event.type == YAML_MAPPING_START_EVENT:
+        elif event.type == hughml_MAPPING_START_EVENT:
             anchor = None
             if event.data.mapping_start.anchor != NULL:
                 anchor = PyUnicode_FromString(event.data.mapping_start.anchor)
@@ -642,15 +642,15 @@ cdef class CParser:
             if event.data.mapping_start.implicit == 1:
                 implicit = True
             flow_style = None
-            if event.data.mapping_start.style == YAML_FLOW_MAPPING_STYLE:
+            if event.data.mapping_start.style == hughml_FLOW_MAPPING_STYLE:
                 flow_style = True
-            elif event.data.mapping_start.style == YAML_BLOCK_MAPPING_STYLE:
+            elif event.data.mapping_start.style == hughml_BLOCK_MAPPING_STYLE:
                 flow_style = False
             return MappingStartEvent(anchor, tag, implicit,
                     start_mark, end_mark, flow_style)
-        elif event.type == YAML_SEQUENCE_END_EVENT:
+        elif event.type == hughml_SEQUENCE_END_EVENT:
             return SequenceEndEvent(start_mark, end_mark)
-        elif event.type == YAML_MAPPING_END_EVENT:
+        elif event.type == hughml_MAPPING_END_EVENT:
             return MappingEndEvent(start_mark, end_mark)
         else:
             if PY_MAJOR_VERSION < 3:
@@ -686,27 +686,27 @@ cdef class CParser:
 
     def check_node(self):
         self._parse_next_event()
-        if self.parsed_event.type == YAML_STREAM_START_EVENT:
-            yaml_event_delete(&self.parsed_event)
+        if self.parsed_event.type == hughml_STREAM_START_EVENT:
+            hughml_event_delete(&self.parsed_event)
             self._parse_next_event()
-        if self.parsed_event.type != YAML_STREAM_END_EVENT:
+        if self.parsed_event.type != hughml_STREAM_END_EVENT:
             return True
         return False
 
     def get_node(self):
         self._parse_next_event()
-        if self.parsed_event.type != YAML_STREAM_END_EVENT:
+        if self.parsed_event.type != hughml_STREAM_END_EVENT:
             return self._compose_document()
 
     def get_single_node(self):
         self._parse_next_event()
-        yaml_event_delete(&self.parsed_event)
+        hughml_event_delete(&self.parsed_event)
         self._parse_next_event()
         document = None
-        if self.parsed_event.type != YAML_STREAM_END_EVENT:
+        if self.parsed_event.type != hughml_STREAM_END_EVENT:
             document = self._compose_document()
         self._parse_next_event()
-        if self.parsed_event.type != YAML_STREAM_END_EVENT:
+        if self.parsed_event.type != hughml_STREAM_END_EVENT:
             mark = Mark(self.stream_name,
                     self.parsed_event.start_mark.index,
                     self.parsed_event.start_mark.line,
@@ -721,16 +721,16 @@ cdef class CParser:
         return document
 
     cdef object _compose_document(self):
-        yaml_event_delete(&self.parsed_event)
+        hughml_event_delete(&self.parsed_event)
         node = self._compose_node(None, None)
         self._parse_next_event()
-        yaml_event_delete(&self.parsed_event)
+        hughml_event_delete(&self.parsed_event)
         self.anchors = {}
         return node
 
     cdef object _compose_node(self, object parent, object index):
         self._parse_next_event()
-        if self.parsed_event.type == YAML_ALIAS_EVENT:
+        if self.parsed_event.type == hughml_ALIAS_EVENT:
             anchor = PyUnicode_FromString(self.parsed_event.data.alias.anchor)
             if anchor not in self.anchors:
                 mark = Mark(self.stream_name,
@@ -742,16 +742,16 @@ cdef class CParser:
                     raise ComposerError(None, None, "found undefined alias", mark)
                 else:
                     raise ComposerError(None, None, u"found undefined alias", mark)
-            yaml_event_delete(&self.parsed_event)
+            hughml_event_delete(&self.parsed_event)
             return self.anchors[anchor]
         anchor = None
-        if self.parsed_event.type == YAML_SCALAR_EVENT  \
+        if self.parsed_event.type == hughml_SCALAR_EVENT  \
                 and self.parsed_event.data.scalar.anchor != NULL:
             anchor = PyUnicode_FromString(self.parsed_event.data.scalar.anchor)
-        elif self.parsed_event.type == YAML_SEQUENCE_START_EVENT    \
+        elif self.parsed_event.type == hughml_SEQUENCE_START_EVENT    \
                 and self.parsed_event.data.sequence_start.anchor != NULL:
             anchor = PyUnicode_FromString(self.parsed_event.data.sequence_start.anchor)
-        elif self.parsed_event.type == YAML_MAPPING_START_EVENT    \
+        elif self.parsed_event.type == hughml_MAPPING_START_EVENT    \
                 and self.parsed_event.data.mapping_start.anchor != NULL:
             anchor = PyUnicode_FromString(self.parsed_event.data.mapping_start.anchor)
         if anchor is not None:
@@ -768,11 +768,11 @@ cdef class CParser:
                     raise ComposerError(u"found duplicate anchor; first occurrence",
                             self.anchors[anchor].start_mark, u"second occurrence", mark)
         self.descend_resolver(parent, index)
-        if self.parsed_event.type == YAML_SCALAR_EVENT:
+        if self.parsed_event.type == hughml_SCALAR_EVENT:
             node = self._compose_scalar_node(anchor)
-        elif self.parsed_event.type == YAML_SEQUENCE_START_EVENT:
+        elif self.parsed_event.type == hughml_SEQUENCE_START_EVENT:
             node = self._compose_sequence_node(anchor)
-        elif self.parsed_event.type == YAML_MAPPING_START_EVENT:
+        elif self.parsed_event.type == hughml_MAPPING_START_EVENT:
             node = self._compose_mapping_node(anchor)
         self.ascend_resolver()
         return node
@@ -803,20 +803,20 @@ cdef class CParser:
         else:
             tag = PyUnicode_FromString(self.parsed_event.data.scalar.tag)
         style = None
-        if self.parsed_event.data.scalar.style == YAML_PLAIN_SCALAR_STYLE:
+        if self.parsed_event.data.scalar.style == hughml_PLAIN_SCALAR_STYLE:
             style = u''
-        elif self.parsed_event.data.scalar.style == YAML_SINGLE_QUOTED_SCALAR_STYLE:
+        elif self.parsed_event.data.scalar.style == hughml_SINGLE_QUOTED_SCALAR_STYLE:
             style = u'\''
-        elif self.parsed_event.data.scalar.style == YAML_DOUBLE_QUOTED_SCALAR_STYLE:
+        elif self.parsed_event.data.scalar.style == hughml_DOUBLE_QUOTED_SCALAR_STYLE:
             style = u'"'
-        elif self.parsed_event.data.scalar.style == YAML_LITERAL_SCALAR_STYLE:
+        elif self.parsed_event.data.scalar.style == hughml_LITERAL_SCALAR_STYLE:
             style = u'|'
-        elif self.parsed_event.data.scalar.style == YAML_FOLDED_SCALAR_STYLE:
+        elif self.parsed_event.data.scalar.style == hughml_FOLDED_SCALAR_STYLE:
             style = u'>'
         node = ScalarNode(tag, value, start_mark, end_mark, style)
         if anchor is not None:
             self.anchors[anchor] = node
-        yaml_event_delete(&self.parsed_event)
+        hughml_event_delete(&self.parsed_event)
         return node
 
     cdef _compose_sequence_node(self, object anchor):
@@ -836,18 +836,18 @@ cdef class CParser:
         else:
             tag = PyUnicode_FromString(self.parsed_event.data.sequence_start.tag)
         flow_style = None
-        if self.parsed_event.data.sequence_start.style == YAML_FLOW_SEQUENCE_STYLE:
+        if self.parsed_event.data.sequence_start.style == hughml_FLOW_SEQUENCE_STYLE:
             flow_style = True
-        elif self.parsed_event.data.sequence_start.style == YAML_BLOCK_SEQUENCE_STYLE:
+        elif self.parsed_event.data.sequence_start.style == hughml_BLOCK_SEQUENCE_STYLE:
             flow_style = False
         value = []
         node = SequenceNode(tag, value, start_mark, None, flow_style)
         if anchor is not None:
             self.anchors[anchor] = node
-        yaml_event_delete(&self.parsed_event)
+        hughml_event_delete(&self.parsed_event)
         index = 0
         self._parse_next_event()
-        while self.parsed_event.type != YAML_SEQUENCE_END_EVENT:
+        while self.parsed_event.type != hughml_SEQUENCE_END_EVENT:
             value.append(self._compose_node(node, index))
             index = index+1
             self._parse_next_event()
@@ -856,7 +856,7 @@ cdef class CParser:
                 self.parsed_event.end_mark.line,
                 self.parsed_event.end_mark.column,
                 None, None)
-        yaml_event_delete(&self.parsed_event)
+        hughml_event_delete(&self.parsed_event)
         return node
 
     cdef _compose_mapping_node(self, object anchor):
@@ -875,17 +875,17 @@ cdef class CParser:
         else:
             tag = PyUnicode_FromString(self.parsed_event.data.mapping_start.tag)
         flow_style = None
-        if self.parsed_event.data.mapping_start.style == YAML_FLOW_MAPPING_STYLE:
+        if self.parsed_event.data.mapping_start.style == hughml_FLOW_MAPPING_STYLE:
             flow_style = True
-        elif self.parsed_event.data.mapping_start.style == YAML_BLOCK_MAPPING_STYLE:
+        elif self.parsed_event.data.mapping_start.style == hughml_BLOCK_MAPPING_STYLE:
             flow_style = False
         value = []
         node = MappingNode(tag, value, start_mark, None, flow_style)
         if anchor is not None:
             self.anchors[anchor] = node
-        yaml_event_delete(&self.parsed_event)
+        hughml_event_delete(&self.parsed_event)
         self._parse_next_event()
-        while self.parsed_event.type != YAML_MAPPING_END_EVENT:
+        while self.parsed_event.type != hughml_MAPPING_END_EVENT:
             item_key = self._compose_node(node, None)
             item_value = self._compose_node(node, item_key)
             value.append((item_key, item_value))
@@ -895,12 +895,12 @@ cdef class CParser:
                 self.parsed_event.end_mark.line,
                 self.parsed_event.end_mark.column,
                 None, None)
-        yaml_event_delete(&self.parsed_event)
+        hughml_event_delete(&self.parsed_event)
         return node
 
     cdef int _parse_next_event(self) except 0:
-        if self.parsed_event.type == YAML_NO_EVENT:
-            if yaml_parser_parse(&self.parser, &self.parsed_event) == 0:
+        if self.parsed_event.type == hughml_NO_EVENT:
+            if hughml_parser_parse(&self.parser, &self.parsed_event) == 0:
                 error = self._parser_error()
                 raise error
         return 1
@@ -934,7 +934,7 @@ cdef int input_handler(void *data, char *buffer, size_t size, size_t *read) exce
 
 cdef class CEmitter:
 
-    cdef yaml_emitter_t emitter
+    cdef hughml_emitter_t emitter
 
     cdef object stream
 
@@ -953,7 +953,7 @@ cdef class CEmitter:
     def __init__(self, stream, canonical=None, indent=None, width=None,
             allow_unicode=None, line_break=None, encoding=None,
             explicit_start=None, explicit_end=None, version=None, tags=None):
-        if yaml_emitter_initialize(&self.emitter) == 0:
+        if hughml_emitter_initialize(&self.emitter) == 0:
             raise MemoryError
         self.stream = stream
         self.dump_unicode = 0
@@ -964,22 +964,22 @@ cdef class CEmitter:
             if hasattr(stream, u'encoding'):
                 self.dump_unicode = 1
         self.use_encoding = encoding
-        yaml_emitter_set_output(&self.emitter, output_handler, <void *>self)    
+        hughml_emitter_set_output(&self.emitter, output_handler, <void *>self)
         if canonical:
-            yaml_emitter_set_canonical(&self.emitter, 1)
+            hughml_emitter_set_canonical(&self.emitter, 1)
         if indent is not None:
-            yaml_emitter_set_indent(&self.emitter, indent)
+            hughml_emitter_set_indent(&self.emitter, indent)
         if width is not None:
-            yaml_emitter_set_width(&self.emitter, width)
+            hughml_emitter_set_width(&self.emitter, width)
         if allow_unicode:
-            yaml_emitter_set_unicode(&self.emitter, 1)
+            hughml_emitter_set_unicode(&self.emitter, 1)
         if line_break is not None:
             if line_break == '\r':
-                yaml_emitter_set_break(&self.emitter, YAML_CR_BREAK)
+                hughml_emitter_set_break(&self.emitter, hughml_CR_BREAK)
             elif line_break == '\n':
-                yaml_emitter_set_break(&self.emitter, YAML_LN_BREAK)
+                hughml_emitter_set_break(&self.emitter, hughml_LN_BREAK)
             elif line_break == '\r\n':
-                yaml_emitter_set_break(&self.emitter, YAML_CRLN_BREAK)
+                hughml_emitter_set_break(&self.emitter, hughml_CRLN_BREAK)
         self.document_start_implicit = 1
         if explicit_start:
             self.document_start_implicit = 0
@@ -994,15 +994,15 @@ cdef class CEmitter:
         self.closed = -1
 
     def __dealloc__(self):
-        yaml_emitter_delete(&self.emitter)
+        hughml_emitter_delete(&self.emitter)
 
     def dispose(self):
         pass
 
     cdef object _emitter_error(self):
-        if self.emitter.error == YAML_MEMORY_ERROR:
+        if self.emitter.error == hughml_MEMORY_ERROR:
             return MemoryError
-        elif self.emitter.error == YAML_EMITTER_ERROR:
+        elif self.emitter.error == hughml_EMITTER_ERROR:
             if PY_MAJOR_VERSION < 3:
                 problem = self.emitter.problem
             else:
@@ -1013,13 +1013,13 @@ cdef class CEmitter:
         else:
             raise ValueError(u"no emitter error")
 
-    cdef int _object_to_event(self, object event_object, yaml_event_t *event) except 0:
-        cdef yaml_encoding_t encoding
-        cdef yaml_version_directive_t version_directive_value
-        cdef yaml_version_directive_t *version_directive
-        cdef yaml_tag_directive_t tag_directives_value[128]
-        cdef yaml_tag_directive_t *tag_directives_start
-        cdef yaml_tag_directive_t *tag_directives_end
+    cdef int _object_to_event(self, object event_object, hughml_event_t *event) except 0:
+        cdef hughml_encoding_t encoding
+        cdef hughml_version_directive_t version_directive_value
+        cdef hughml_version_directive_t *version_directive
+        cdef hughml_tag_directive_t tag_directives_value[128]
+        cdef hughml_tag_directive_t *tag_directives_start
+        cdef hughml_tag_directive_t *tag_directives_end
         cdef int implicit
         cdef int plain_implicit
         cdef int quoted_implicit
@@ -1027,23 +1027,23 @@ cdef class CEmitter:
         cdef char *tag
         cdef char *value
         cdef int length
-        cdef yaml_scalar_style_t scalar_style
-        cdef yaml_sequence_style_t sequence_style
-        cdef yaml_mapping_style_t mapping_style
+        cdef hughml_scalar_style_t scalar_style
+        cdef hughml_sequence_style_t sequence_style
+        cdef hughml_mapping_style_t mapping_style
         event_class = event_object.__class__
         if event_class is StreamStartEvent:
-            encoding = YAML_UTF8_ENCODING
+            encoding = hughml_UTF8_ENCODING
             if event_object.encoding == u'utf-16-le' or event_object.encoding == 'utf-16-le':
-                encoding = YAML_UTF16LE_ENCODING
+                encoding = hughml_UTF16LE_ENCODING
             elif event_object.encoding == u'utf-16-be' or event_object.encoding == 'utf-16-be':
-                encoding = YAML_UTF16BE_ENCODING
+                encoding = hughml_UTF16BE_ENCODING
             if event_object.encoding is None:
                 self.dump_unicode = 1
             if self.dump_unicode == 1:
-                encoding = YAML_UTF8_ENCODING
-            yaml_stream_start_event_initialize(event, encoding)
+                encoding = hughml_UTF8_ENCODING
+            hughml_stream_start_event_initialize(event, encoding)
         elif event_class is StreamEndEvent:
-            yaml_stream_end_event_initialize(event)
+            hughml_stream_end_event_initialize(event)
         elif event_class is DocumentStartEvent:
             version_directive = NULL
             if event_object.version:
@@ -1085,14 +1085,14 @@ cdef class CEmitter:
             implicit = 1
             if event_object.explicit:
                 implicit = 0
-            if yaml_document_start_event_initialize(event, version_directive,
+            if hughml_document_start_event_initialize(event, version_directive,
                     tag_directives_start, tag_directives_end, implicit) == 0:
                 raise MemoryError
         elif event_class is DocumentEndEvent:
             implicit = 1
             if event_object.explicit:
                 implicit = 0
-            yaml_document_end_event_initialize(event, implicit)
+            hughml_document_end_event_initialize(event, implicit)
         elif event_class is AliasEvent:
             anchor = NULL
             anchor_object = event_object.anchor
@@ -1104,7 +1104,7 @@ cdef class CEmitter:
                 else:
                     raise TypeError(u"anchor must be a string")
             anchor = PyString_AS_STRING(anchor_object)
-            if yaml_alias_event_initialize(event, anchor) == 0:
+            if hughml_alias_event_initialize(event, anchor) == 0:
                 raise MemoryError
         elif event_class is ScalarEvent:
             anchor = NULL
@@ -1145,16 +1145,16 @@ cdef class CEmitter:
                 plain_implicit = event_object.implicit[0]
                 quoted_implicit = event_object.implicit[1]
             style_object = event_object.style
-            scalar_style = YAML_PLAIN_SCALAR_STYLE
+            scalar_style = hughml_PLAIN_SCALAR_STYLE
             if style_object == "'" or style_object == u"'":
-                scalar_style = YAML_SINGLE_QUOTED_SCALAR_STYLE
+                scalar_style = hughml_SINGLE_QUOTED_SCALAR_STYLE
             elif style_object == "\"" or style_object == u"\"":
-                scalar_style = YAML_DOUBLE_QUOTED_SCALAR_STYLE
+                scalar_style = hughml_DOUBLE_QUOTED_SCALAR_STYLE
             elif style_object == "|" or style_object == u"|":
-                scalar_style = YAML_LITERAL_SCALAR_STYLE
+                scalar_style = hughml_LITERAL_SCALAR_STYLE
             elif style_object == ">" or style_object == u">":
-                scalar_style = YAML_FOLDED_SCALAR_STYLE
-            if yaml_scalar_event_initialize(event, anchor, tag, value, length,
+                scalar_style = hughml_FOLDED_SCALAR_STYLE
+            if hughml_scalar_event_initialize(event, anchor, tag, value, length,
                     plain_implicit, quoted_implicit, scalar_style) == 0:
                 raise MemoryError
         elif event_class is SequenceStartEvent:
@@ -1183,10 +1183,10 @@ cdef class CEmitter:
             implicit = 0
             if event_object.implicit:
                 implicit = 1
-            sequence_style = YAML_BLOCK_SEQUENCE_STYLE
+            sequence_style = hughml_BLOCK_SEQUENCE_STYLE
             if event_object.flow_style:
-                sequence_style = YAML_FLOW_SEQUENCE_STYLE
-            if yaml_sequence_start_event_initialize(event, anchor, tag,
+                sequence_style = hughml_FLOW_SEQUENCE_STYLE
+            if hughml_sequence_start_event_initialize(event, anchor, tag,
                     implicit, sequence_style) == 0:
                 raise MemoryError
         elif event_class is MappingStartEvent:
@@ -1215,16 +1215,16 @@ cdef class CEmitter:
             implicit = 0
             if event_object.implicit:
                 implicit = 1
-            mapping_style = YAML_BLOCK_MAPPING_STYLE
+            mapping_style = hughml_BLOCK_MAPPING_STYLE
             if event_object.flow_style:
-                mapping_style = YAML_FLOW_MAPPING_STYLE
-            if yaml_mapping_start_event_initialize(event, anchor, tag,
+                mapping_style = hughml_FLOW_MAPPING_STYLE
+            if hughml_mapping_start_event_initialize(event, anchor, tag,
                     implicit, mapping_style) == 0:
                 raise MemoryError
         elif event_class is SequenceEndEvent:
-            yaml_sequence_end_event_initialize(event)
+            hughml_sequence_end_event_initialize(event)
         elif event_class is MappingEndEvent:
-            yaml_mapping_end_event_initialize(event)
+            hughml_mapping_end_event_initialize(event)
         else:
             if PY_MAJOR_VERSION < 3:
                 raise TypeError("invalid event %s" % event_object)
@@ -1233,28 +1233,28 @@ cdef class CEmitter:
         return 1
 
     def emit(self, event_object):
-        cdef yaml_event_t event
+        cdef hughml_event_t event
         self._object_to_event(event_object, &event)
-        if yaml_emitter_emit(&self.emitter, &event) == 0:
+        if hughml_emitter_emit(&self.emitter, &event) == 0:
             error = self._emitter_error()
             raise error
 
     def open(self):
-        cdef yaml_event_t event
-        cdef yaml_encoding_t encoding
+        cdef hughml_event_t event
+        cdef hughml_encoding_t encoding
         if self.closed == -1:
             if self.use_encoding == u'utf-16-le' or self.use_encoding == 'utf-16-le':
-                encoding = YAML_UTF16LE_ENCODING
+                encoding = hughml_UTF16LE_ENCODING
             elif self.use_encoding == u'utf-16-be' or self.use_encoding == 'utf-16-be':
-                encoding = YAML_UTF16BE_ENCODING
+                encoding = hughml_UTF16BE_ENCODING
             else:
-                encoding = YAML_UTF8_ENCODING
+                encoding = hughml_UTF8_ENCODING
             if self.use_encoding is None:
                 self.dump_unicode = 1
             if self.dump_unicode == 1:
-                encoding = YAML_UTF8_ENCODING
-            yaml_stream_start_event_initialize(&event, encoding)
-            if yaml_emitter_emit(&self.emitter, &event) == 0:
+                encoding = hughml_UTF8_ENCODING
+            hughml_stream_start_event_initialize(&event, encoding)
+            if hughml_emitter_emit(&self.emitter, &event) == 0:
                 error = self._emitter_error()
                 raise error
             self.closed = 0
@@ -1270,26 +1270,26 @@ cdef class CEmitter:
                 raise SerializerError(u"serializer is already opened")
 
     def close(self):
-        cdef yaml_event_t event
+        cdef hughml_event_t event
         if self.closed == -1:
             if PY_MAJOR_VERSION < 3:
                 raise SerializerError("serializer is not opened")
             else:
                 raise SerializerError(u"serializer is not opened")
         elif self.closed == 0:
-            yaml_stream_end_event_initialize(&event)
-            if yaml_emitter_emit(&self.emitter, &event) == 0:
+            hughml_stream_end_event_initialize(&event)
+            if hughml_emitter_emit(&self.emitter, &event) == 0:
                 error = self._emitter_error()
                 raise error
             self.closed = 1
 
     def serialize(self, node):
-        cdef yaml_event_t event
-        cdef yaml_version_directive_t version_directive_value
-        cdef yaml_version_directive_t *version_directive
-        cdef yaml_tag_directive_t tag_directives_value[128]
-        cdef yaml_tag_directive_t *tag_directives_start
-        cdef yaml_tag_directive_t *tag_directives_end
+        cdef hughml_event_t event
+        cdef hughml_version_directive_t version_directive_value
+        cdef hughml_version_directive_t *version_directive
+        cdef hughml_tag_directive_t tag_directives_value[128]
+        cdef hughml_tag_directive_t *tag_directives_start
+        cdef hughml_tag_directive_t *tag_directives_end
         if self.closed == -1:
             if PY_MAJOR_VERSION < 3:
                 raise SerializerError("serializer is not opened")
@@ -1337,17 +1337,17 @@ cdef class CEmitter:
                         raise TypeError(u"tag prefix must be a string")
                 tag_directives_end.prefix = PyString_AS_STRING(prefix)
                 tag_directives_end = tag_directives_end+1
-        if yaml_document_start_event_initialize(&event, version_directive,
+        if hughml_document_start_event_initialize(&event, version_directive,
                 tag_directives_start, tag_directives_end,
                 self.document_start_implicit) == 0:
             raise MemoryError
-        if yaml_emitter_emit(&self.emitter, &event) == 0:
+        if hughml_emitter_emit(&self.emitter, &event) == 0:
             error = self._emitter_error()
             raise error
         self._anchor_node(node)
         self._serialize_node(node, None, None)
-        yaml_document_end_event_initialize(&event, self.document_end_implicit)
-        if yaml_emitter_emit(&self.emitter, &event) == 0:
+        hughml_document_end_event_initialize(&event, self.document_end_implicit)
+        if hughml_emitter_emit(&self.emitter, &event) == 0:
             error = self._emitter_error()
             raise error
         self.serialized_nodes = {}
@@ -1372,7 +1372,7 @@ cdef class CEmitter:
         return 1
 
     cdef int _serialize_node(self, object node, object parent, object index) except 0:
-        cdef yaml_event_t event
+        cdef hughml_event_t event
         cdef int implicit
         cdef int plain_implicit
         cdef int quoted_implicit
@@ -1381,9 +1381,9 @@ cdef class CEmitter:
         cdef char *value
         cdef int length
         cdef int item_index
-        cdef yaml_scalar_style_t scalar_style
-        cdef yaml_sequence_style_t sequence_style
-        cdef yaml_mapping_style_t mapping_style
+        cdef hughml_scalar_style_t scalar_style
+        cdef hughml_sequence_style_t sequence_style
+        cdef hughml_mapping_style_t mapping_style
         anchor_object = self.anchors[node]
         anchor = NULL
         if anchor_object is not None:
@@ -1396,9 +1396,9 @@ cdef class CEmitter:
                     raise TypeError(u"anchor must be a string")
             anchor = PyString_AS_STRING(anchor_object)
         if node in self.serialized_nodes:
-            if yaml_alias_event_initialize(&event, anchor) == 0:
+            if hughml_alias_event_initialize(&event, anchor) == 0:
                 raise MemoryError
-            if yaml_emitter_emit(&self.emitter, &event) == 0:
+            if hughml_emitter_emit(&self.emitter, &event) == 0:
                 error = self._emitter_error()
                 raise error
         else:
@@ -1434,19 +1434,19 @@ cdef class CEmitter:
                 value = PyString_AS_STRING(value_object)
                 length = PyString_GET_SIZE(value_object)
                 style_object = node.style
-                scalar_style = YAML_PLAIN_SCALAR_STYLE
+                scalar_style = hughml_PLAIN_SCALAR_STYLE
                 if style_object == "'" or style_object == u"'":
-                    scalar_style = YAML_SINGLE_QUOTED_SCALAR_STYLE
+                    scalar_style = hughml_SINGLE_QUOTED_SCALAR_STYLE
                 elif style_object == "\"" or style_object == u"\"":
-                    scalar_style = YAML_DOUBLE_QUOTED_SCALAR_STYLE
+                    scalar_style = hughml_DOUBLE_QUOTED_SCALAR_STYLE
                 elif style_object == "|" or style_object == u"|":
-                    scalar_style = YAML_LITERAL_SCALAR_STYLE
+                    scalar_style = hughml_LITERAL_SCALAR_STYLE
                 elif style_object == ">" or style_object == u">":
-                    scalar_style = YAML_FOLDED_SCALAR_STYLE
-                if yaml_scalar_event_initialize(&event, anchor, tag, value, length,
+                    scalar_style = hughml_FOLDED_SCALAR_STYLE
+                if hughml_scalar_event_initialize(&event, anchor, tag, value, length,
                         plain_implicit, quoted_implicit, scalar_style) == 0:
                     raise MemoryError
-                if yaml_emitter_emit(&self.emitter, &event) == 0:
+                if hughml_emitter_emit(&self.emitter, &event) == 0:
                     error = self._emitter_error()
                     raise error
             elif node_class is SequenceNode:
@@ -1464,21 +1464,21 @@ cdef class CEmitter:
                         else:
                             raise TypeError(u"tag must be a string")
                     tag = PyString_AS_STRING(tag_object)
-                sequence_style = YAML_BLOCK_SEQUENCE_STYLE
+                sequence_style = hughml_BLOCK_SEQUENCE_STYLE
                 if node.flow_style:
-                    sequence_style = YAML_FLOW_SEQUENCE_STYLE
-                if yaml_sequence_start_event_initialize(&event, anchor, tag,
+                    sequence_style = hughml_FLOW_SEQUENCE_STYLE
+                if hughml_sequence_start_event_initialize(&event, anchor, tag,
                         implicit, sequence_style) == 0:
                     raise MemoryError
-                if yaml_emitter_emit(&self.emitter, &event) == 0:
+                if hughml_emitter_emit(&self.emitter, &event) == 0:
                     error = self._emitter_error()
                     raise error
                 item_index = 0
                 for item in node.value:
                     self._serialize_node(item, node, item_index)
                     item_index = item_index+1
-                yaml_sequence_end_event_initialize(&event)
-                if yaml_emitter_emit(&self.emitter, &event) == 0:
+                hughml_sequence_end_event_initialize(&event)
+                if hughml_emitter_emit(&self.emitter, &event) == 0:
                     error = self._emitter_error()
                     raise error
             elif node_class is MappingNode:
@@ -1496,20 +1496,20 @@ cdef class CEmitter:
                         else:
                             raise TypeError(u"tag must be a string")
                     tag = PyString_AS_STRING(tag_object)
-                mapping_style = YAML_BLOCK_MAPPING_STYLE
+                mapping_style = hughml_BLOCK_MAPPING_STYLE
                 if node.flow_style:
-                    mapping_style = YAML_FLOW_MAPPING_STYLE
-                if yaml_mapping_start_event_initialize(&event, anchor, tag,
+                    mapping_style = hughml_FLOW_MAPPING_STYLE
+                if hughml_mapping_start_event_initialize(&event, anchor, tag,
                         implicit, mapping_style) == 0:
                     raise MemoryError
-                if yaml_emitter_emit(&self.emitter, &event) == 0:
+                if hughml_emitter_emit(&self.emitter, &event) == 0:
                     error = self._emitter_error()
                     raise error
                 for item_key, item_value in node.value:
                     self._serialize_node(item_key, node, None)
                     self._serialize_node(item_value, node, item_key)
-                yaml_mapping_end_event_initialize(&event)
-                if yaml_emitter_emit(&self.emitter, &event) == 0:
+                hughml_mapping_end_event_initialize(&event)
+                if hughml_emitter_emit(&self.emitter, &event) == 0:
                     error = self._emitter_error()
                     raise error
             self.ascend_resolver()

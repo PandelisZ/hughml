@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import yaml, codecs, sys, os.path, optparse
+import hughml, codecs, sys, os.path, optparse
 
 class Style:
 
@@ -15,7 +15,7 @@ class Style:
                 continue
             for key in domain:
                 name = ''.join([part.capitalize() for part in key.split('-')])
-                cls = getattr(yaml, '%s%s' % (name, Class))
+                cls = getattr(hughml, '%s%s' % (name, Class))
                 value = domain[key]
                 if not value:
                     continue
@@ -29,15 +29,15 @@ class Style:
     def __setstate__(self, state):
         self.__init__(**state)
 
-yaml.add_path_resolver(u'tag:yaml.org,2002:python/object:__main__.Style',
+hughml.add_path_resolver(u'tag:hughml.org,2002:python/object:__main__.Style',
         [None], dict)
-yaml.add_path_resolver(u'tag:yaml.org,2002:pairs',
+hughml.add_path_resolver(u'tag:hughml.org,2002:pairs',
         [None, u'replaces'], list)
 
-class YAMLHighlight:
+class hughmlHighlight:
 
     def __init__(self, options):
-        config = yaml.load(file(options.config, 'rb').read())
+        config = hughml.load(file(options.config, 'rb').read())
         self.style = config[options.style]
         if options.input:
             self.input = file(options.input, 'rb')
@@ -57,8 +57,8 @@ class YAMLHighlight:
         else:
             input = unicode(input, 'utf-8')
         substitutions = self.style.substitutions
-        tokens = yaml.scan(input)
-        events = yaml.parse(input)
+        tokens = hughml.scan(input)
+        events = hughml.parse(input)
         markers = []
         number = 0
         for token in tokens:
@@ -102,13 +102,13 @@ if __name__ == '__main__':
     parser.add_option('-s', '--style', dest='style', default='ascii',
             help="specify the highlighting style", metavar='STYLE')
     parser.add_option('-c', '--config', dest='config',
-            default=os.path.join(os.path.dirname(sys.argv[0]), 'yaml_hl.cfg'),
+            default=os.path.join(os.path.dirname(sys.argv[0]), 'hughml_hl.cfg'),
             help="set an alternative configuration file", metavar='CONFIG')
     parser.add_option('-i', '--input', dest='input', default=None,
             help="set the input file (default: stdin)", metavar='FILE')
     parser.add_option('-o', '--output', dest='output', default=None,
             help="set the output file (default: stdout)", metavar='FILE')
     (options, args) = parser.parse_args()
-    hl = YAMLHighlight(options)
+    hl = hughmlHighlight(options)
     hl.highlight()
 

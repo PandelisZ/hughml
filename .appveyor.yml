@@ -9,8 +9,8 @@ image:
 #- 'C:\Python38-x64'
 
 environment:
-  libyaml_repo_url: https://github.com/yaml/libyaml.git
-  libyaml_refspec: release/0.2.2
+  libhughml_repo_url: https://github.com/hughml/libhughml.git
+  libhughml_refspec: release/0.2.2
 #  matrix:
 #    - PYTHON_VER: Python27
 #    - PYTHON_VER: Python27-x64

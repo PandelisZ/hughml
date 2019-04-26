@@ -1,5 +1,5 @@
 
-import yaml
+import hughml
 
 class AnInstance:
 
@@ -29,9 +29,9 @@ def test_recursive(recursive_filename, verbose=False):
     value2 = None
     output2 = None
     try:
-        output1 = yaml.dump(value1)
-        value2 = yaml.load(output1, yaml.FullLoader)
-        output2 = yaml.dump(value2)
+        output1 = hughml.dump(value1)
+        value2 = hughml.load(output1, hughml.FullLoader)
+        output2 = hughml.dump(value2)
         assert output1 == output2, (output1, output2)
     finally:
         if verbose:

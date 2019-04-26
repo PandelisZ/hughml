@@ -1,139 +1,139 @@
 
-import _yaml, yaml
+import _hughml, hughml
 import types, pprint
 
-yaml.PyBaseLoader = yaml.BaseLoader
-yaml.PySafeLoader = yaml.SafeLoader
-yaml.PyLoader = yaml.Loader
-yaml.PyBaseDumper = yaml.BaseDumper
-yaml.PySafeDumper = yaml.SafeDumper
-yaml.PyDumper = yaml.Dumper
+hughml.PyBaseLoader = hughml.BaseLoader
+hughml.PySafeLoader = hughml.SafeLoader
+hughml.PyLoader = hughml.Loader
+hughml.PyBaseDumper = hughml.BaseDumper
+hughml.PySafeDumper = hughml.SafeDumper
+hughml.PyDumper = hughml.Dumper
 
-old_scan = yaml.scan
-def new_scan(stream, Loader=yaml.CLoader):
+old_scan = hughml.scan
+def new_scan(stream, Loader=hughml.CLoader):
     return old_scan(stream, Loader)
 
-old_parse = yaml.parse
-def new_parse(stream, Loader=yaml.CLoader):
+old_parse = hughml.parse
+def new_parse(stream, Loader=hughml.CLoader):
     return old_parse(stream, Loader)
 
-old_compose = yaml.compose
-def new_compose(stream, Loader=yaml.CLoader):
+old_compose = hughml.compose
+def new_compose(stream, Loader=hughml.CLoader):
     return old_compose(stream, Loader)
 
-old_compose_all = yaml.compose_all
-def new_compose_all(stream, Loader=yaml.CLoader):
+old_compose_all = hughml.compose_all
+def new_compose_all(stream, Loader=hughml.CLoader):
     return old_compose_all(stream, Loader)
 
-old_load = yaml.load
-def new_load(stream, Loader=yaml.CLoader):
+old_load = hughml.load
+def new_load(stream, Loader=hughml.CLoader):
     return old_load(stream, Loader)
 
-old_load_all = yaml.load_all
-def new_load_all(stream, Loader=yaml.CLoader):
+old_load_all = hughml.load_all
+def new_load_all(stream, Loader=hughml.CLoader):
     return old_load_all(stream, Loader)
 
-old_safe_load = yaml.safe_load
+old_safe_load = hughml.safe_load
 def new_safe_load(stream):
-    return old_load(stream, yaml.CSafeLoader)
+    return old_load(stream, hughml.CSafeLoader)
 
-old_safe_load_all = yaml.safe_load_all
+old_safe_load_all = hughml.safe_load_all
 def new_safe_load_all(stream):
-    return old_load_all(stream, yaml.CSafeLoader)
+    return old_load_all(stream, hughml.CSafeLoader)
 
-old_emit = yaml.emit
-def new_emit(events, stream=None, Dumper=yaml.CDumper, **kwds):
+old_emit = hughml.emit
+def new_emit(events, stream=None, Dumper=hughml.CDumper, **kwds):
     return old_emit(events, stream, Dumper, **kwds)
 
-old_serialize = yaml.serialize
-def new_serialize(node, stream, Dumper=yaml.CDumper, **kwds):
+old_serialize = hughml.serialize
+def new_serialize(node, stream, Dumper=hughml.CDumper, **kwds):
     return old_serialize(node, stream, Dumper, **kwds)
 
-old_serialize_all = yaml.serialize_all
-def new_serialize_all(nodes, stream=None, Dumper=yaml.CDumper, **kwds):
+old_serialize_all = hughml.serialize_all
+def new_serialize_all(nodes, stream=None, Dumper=hughml.CDumper, **kwds):
     return old_serialize_all(nodes, stream, Dumper, **kwds)
 
-old_dump = yaml.dump
-def new_dump(data, stream=None, Dumper=yaml.CDumper, **kwds):
+old_dump = hughml.dump
+def new_dump(data, stream=None, Dumper=hughml.CDumper, **kwds):
     return old_dump(data, stream, Dumper, **kwds)
 
-old_dump_all = yaml.dump_all
-def new_dump_all(documents, stream=None, Dumper=yaml.CDumper, **kwds):
+old_dump_all = hughml.dump_all
+def new_dump_all(documents, stream=None, Dumper=hughml.CDumper, **kwds):
     return old_dump_all(documents, stream, Dumper, **kwds)
 
-old_safe_dump = yaml.safe_dump
+old_safe_dump = hughml.safe_dump
 def new_safe_dump(data, stream=None, **kwds):
-    return old_dump(data, stream, yaml.CSafeDumper, **kwds)
+    return old_dump(data, stream, hughml.CSafeDumper, **kwds)
 
-old_safe_dump_all = yaml.safe_dump_all
+old_safe_dump_all = hughml.safe_dump_all
 def new_safe_dump_all(documents, stream=None, **kwds):
-    return old_dump_all(documents, stream, yaml.CSafeDumper, **kwds)
+    return old_dump_all(documents, stream, hughml.CSafeDumper, **kwds)
 
 def _set_up():
-    yaml.BaseLoader = yaml.CBaseLoader
-    yaml.SafeLoader = yaml.CSafeLoader
-    yaml.Loader = yaml.CLoader
-    yaml.BaseDumper = yaml.CBaseDumper
-    yaml.SafeDumper = yaml.CSafeDumper
-    yaml.Dumper = yaml.CDumper
-    yaml.scan = new_scan
-    yaml.parse = new_parse
-    yaml.compose = new_compose
-    yaml.compose_all = new_compose_all
-    yaml.load = new_load
-    yaml.load_all = new_load_all
-    yaml.safe_load = new_safe_load
-    yaml.safe_load_all = new_safe_load_all
-    yaml.emit = new_emit
-    yaml.serialize = new_serialize
-    yaml.serialize_all = new_serialize_all
-    yaml.dump = new_dump
-    yaml.dump_all = new_dump_all
-    yaml.safe_dump = new_safe_dump
-    yaml.safe_dump_all = new_safe_dump_all
+    hughml.BaseLoader = hughml.CBaseLoader
+    hughml.SafeLoader = hughml.CSafeLoader
+    hughml.Loader = hughml.CLoader
+    hughml.BaseDumper = hughml.CBaseDumper
+    hughml.SafeDumper = hughml.CSafeDumper
+    hughml.Dumper = hughml.CDumper
+    hughml.scan = new_scan
+    hughml.parse = new_parse
+    hughml.compose = new_compose
+    hughml.compose_all = new_compose_all
+    hughml.load = new_load
+    hughml.load_all = new_load_all
+    hughml.safe_load = new_safe_load
+    hughml.safe_load_all = new_safe_load_all
+    hughml.emit = new_emit
+    hughml.serialize = new_serialize
+    hughml.serialize_all = new_serialize_all
+    hughml.dump = new_dump
+    hughml.dump_all = new_dump_all
+    hughml.safe_dump = new_safe_dump
+    hughml.safe_dump_all = new_safe_dump_all
 
 def _tear_down():
-    yaml.BaseLoader = yaml.PyBaseLoader
-    yaml.SafeLoader = yaml.PySafeLoader
-    yaml.Loader = yaml.PyLoader
-    yaml.BaseDumper = yaml.PyBaseDumper
-    yaml.SafeDumper = yaml.PySafeDumper
-    yaml.Dumper = yaml.PyDumper
-    yaml.scan = old_scan
-    yaml.parse = old_parse
-    yaml.compose = old_compose
-    yaml.compose_all = old_compose_all
-    yaml.load = old_load
-    yaml.load_all = old_load_all
-    yaml.safe_load = old_safe_load
-    yaml.safe_load_all = old_safe_load_all
-    yaml.emit = old_emit
-    yaml.serialize = old_serialize
-    yaml.serialize_all = old_serialize_all
-    yaml.dump = old_dump
-    yaml.dump_all = old_dump_all
-    yaml.safe_dump = old_safe_dump
-    yaml.safe_dump_all = old_safe_dump_all
+    hughml.BaseLoader = hughml.PyBaseLoader
+    hughml.SafeLoader = hughml.PySafeLoader
+    hughml.Loader = hughml.PyLoader
+    hughml.BaseDumper = hughml.PyBaseDumper
+    hughml.SafeDumper = hughml.PySafeDumper
+    hughml.Dumper = hughml.PyDumper
+    hughml.scan = old_scan
+    hughml.parse = old_parse
+    hughml.compose = old_compose
+    hughml.compose_all = old_compose_all
+    hughml.load = old_load
+    hughml.load_all = old_load_all
+    hughml.safe_load = old_safe_load
+    hughml.safe_load_all = old_safe_load_all
+    hughml.emit = old_emit
+    hughml.serialize = old_serialize
+    hughml.serialize_all = old_serialize_all
+    hughml.dump = old_dump
+    hughml.dump_all = old_dump_all
+    hughml.safe_dump = old_safe_dump
+    hughml.safe_dump_all = old_safe_dump_all
 
 def test_c_version(verbose=False):
     if verbose:
-        print _yaml.get_version()
-        print _yaml.get_version_string()
-    assert ("%s.%s.%s" % _yaml.get_version()) == _yaml.get_version_string(),    \
-            (_yaml.get_version(), _yaml.get_version_string())
+        print _hughml.get_version()
+        print _hughml.get_version_string()
+    assert ("%s.%s.%s" % _hughml.get_version()) == _hughml.get_version_string(),    \
+            (_hughml.get_version(), _hughml.get_version_string())
 
 def _compare_scanners(py_data, c_data, verbose):
-    py_tokens = list(yaml.scan(py_data, Loader=yaml.PyLoader))
+    py_tokens = list(hughml.scan(py_data, Loader=hughml.PyLoader))
     c_tokens = []
     try:
-        for token in yaml.scan(c_data, Loader=yaml.CLoader):
+        for token in hughml.scan(c_data, Loader=hughml.CLoader):
             c_tokens.append(token)
         assert len(py_tokens) == len(c_tokens), (len(py_tokens), len(c_tokens))
         for py_token, c_token in zip(py_tokens, c_tokens):
             assert py_token.__class__ == c_token.__class__, (py_token, c_token)
             if hasattr(py_token, 'value'):
                 assert py_token.value == c_token.value, (py_token, c_token)
-            if isinstance(py_token, yaml.StreamEndToken):
+            if isinstance(py_token, hughml.StreamEndToken):
                 continue
             py_start = (py_token.start_mark.index, py_token.start_mark.line, py_token.start_mark.column)
             py_end = (py_token.end_mark.index, py_token.end_mark.line, py_token.end_mark.column)
@@ -162,10 +162,10 @@ test_c_scanner.unittest = ['.data', '.canonical']
 test_c_scanner.skip = ['.skip-ext']
 
 def _compare_parsers(py_data, c_data, verbose):
-    py_events = list(yaml.parse(py_data, Loader=yaml.PyLoader))
+    py_events = list(hughml.parse(py_data, Loader=hughml.PyLoader))
     c_events = []
     try:
-        for event in yaml.parse(c_data, Loader=yaml.CLoader):
+        for event in hughml.parse(c_data, Loader=hughml.CLoader):
             c_events.append(event)
         assert len(py_events) == len(c_events), (len(py_events), len(c_events))
         for py_event, c_event in zip(py_events, c_events):
@@ -195,12 +195,12 @@ test_c_parser.unittest = ['.data', '.canonical']
 test_c_parser.skip = ['.skip-ext']
 
 def _compare_emitters(data, verbose):
-    events = list(yaml.parse(data, Loader=yaml.PyLoader))
-    c_data = yaml.emit(events, Dumper=yaml.CDumper)
+    events = list(hughml.parse(data, Loader=hughml.PyLoader))
+    c_data = hughml.emit(events, Dumper=hughml.CDumper)
     if verbose:
         print c_data
-    py_events = list(yaml.parse(c_data, Loader=yaml.PyLoader))
-    c_events = list(yaml.parse(c_data, Loader=yaml.CLoader))
+    py_events = list(hughml.parse(c_data, Loader=hughml.PyLoader))
+    c_events = list(hughml.parse(c_data, Loader=hughml.CLoader))
     try:
         assert len(events) == len(py_events), (len(events), len(py_events))
         assert len(events) == len(c_events), (len(events), len(c_events))

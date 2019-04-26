@@ -1,9 +1,9 @@
 
-import yaml, canonical
+import hughml, canonical
 
 def test_canonical_scanner(canonical_filename, verbose=False):
     data = open(canonical_filename, 'rb').read()
-    tokens = list(yaml.canonical_scan(data))
+    tokens = list(hughml.canonical_scan(data))
     assert tokens, tokens
     if verbose:
         for token in tokens:
@@ -13,7 +13,7 @@ test_canonical_scanner.unittest = ['.canonical']
 
 def test_canonical_parser(canonical_filename, verbose=False):
     data = open(canonical_filename, 'rb').read()
-    events = list(yaml.canonical_parse(data))
+    events = list(hughml.canonical_parse(data))
     assert events, events
     if verbose:
         for event in events:
@@ -24,8 +24,8 @@ test_canonical_parser.unittest = ['.canonical']
 def test_canonical_error(data_filename, canonical_filename, verbose=False):
     data = open(data_filename, 'rb').read()
     try:
-        output = list(yaml.canonical_load_all(data))
-    except yaml.YAMLError, exc:
+        output = list(hughml.canonical_load_all(data))
+    except hughml.hughmlError, exc:
         if verbose:
             print exc
     else:

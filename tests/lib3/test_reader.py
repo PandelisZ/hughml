@@ -1,12 +1,12 @@
 
-import yaml.reader
+import hughml.reader
 
 def _run_reader(data, verbose):
     try:
-        stream = yaml.reader.Reader(data)
+        stream = hughml.reader.Reader(data)
         while stream.peek() != '\0':
             stream.forward()
-    except yaml.reader.ReaderError as exc:
+    except hughml.reader.ReaderError as exc:
         if verbose:
             print(exc)
     else:

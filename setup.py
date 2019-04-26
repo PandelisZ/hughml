@@ -1,25 +1,25 @@
 
-NAME = 'PyYAML'
+NAME = 'Pyhughml'
 VERSION = '5.1'
-DESCRIPTION = "YAML parser and emitter for Python"
+DESCRIPTION = "hughml parser and emitter for Python"
 LONG_DESCRIPTION = """\
-YAML is a data serialization format designed for human readability
-and interaction with scripting languages.  PyYAML is a YAML parser
+hughml is a data serialization format designed for human readability
+and interaction with scripting languages.  Pyhughml is a hughml parser
 and emitter for Python.
 
-PyYAML features a complete YAML 1.1 parser, Unicode support, pickle
-support, capable extension API, and sensible error messages.  PyYAML
-supports standard YAML tags and provides Python-specific tags that
+Pyhughml features a complete hughml 1.1 parser, Unicode support, pickle
+support, capable extension API, and sensible error messages.  Pyhughml
+supports standard hughml tags and provides Python-specific tags that
 allow to represent an arbitrary Python object.
 
-PyYAML is applicable for a broad range of tasks from complex
+Pyhughml is applicable for a broad range of tasks from complex
 configuration files to object serialization and persistence."""
 AUTHOR = "Kirill Simonov"
 AUTHOR_EMAIL = 'xi@resolvent.net'
 LICENSE = "MIT"
 PLATFORMS = "Any"
-URL = "https://github.com/yaml/pyyaml"
-DOWNLOAD_URL = "https://pypi.org/project/PyYAML/"
+URL = "https://github.com/hughml/pyhughml"
+DOWNLOAD_URL = "https://pypi.org/project/Pyhughml/"
 CLASSIFIERS = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
@@ -40,18 +40,18 @@ CLASSIFIERS = [
 ]
 
 
-LIBYAML_CHECK = """
-#include <yaml.h>
+LIBhughml_CHECK = """
+#include <hughml.h>
 
 int main(void) {
-    yaml_parser_t parser;
-    yaml_emitter_t emitter;
+    hughml_parser_t parser;
+    hughml_emitter_t emitter;
 
-    yaml_parser_initialize(&parser);
-    yaml_parser_delete(&parser);
+    hughml_parser_initialize(&parser);
+    hughml_parser_delete(&parser);
 
-    yaml_emitter_initialize(&emitter);
-    yaml_emitter_delete(&emitter);
+    hughml_emitter_initialize(&emitter);
+    hughml_emitter_delete(&emitter);
 
     return 0;
 }
@@ -302,11 +302,11 @@ if __name__ == '__main__':
         classifiers=CLASSIFIERS,
 
         package_dir={'': {2: 'lib', 3: 'lib3'}[sys.version_info[0]]},
-        packages=['yaml'],
+        packages=['hughml'],
         ext_modules=[
-            Extension('_yaml', ['ext/_yaml.pyx'],
-                'libyaml', "LibYAML bindings", LIBYAML_CHECK,
-                libraries=['yaml']),
+            Extension('_hughml', ['ext/_hughml.pyx'],
+                'libhughml', "Libhughml bindings", LIBhughml_CHECK,
+                libraries=['hughml']),
         ],
 
         distclass=Distribution,

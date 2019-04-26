@@ -22,12 +22,12 @@ matrix:
     # - python: pypy
     # env: TOXENV=pypy
 
-# build libyaml
+# build libhughml
 before_script:
 - >-
   cd /tmp
-  && git clone https://github.com/yaml/libyaml.git libyaml
-  && cd libyaml
+  && git clone https://github.com/hughml/libhughml.git libhughml
+  && cd libhughml
   && git reset --hard 0.2.2
   && ./bootstrap
   && ./configure

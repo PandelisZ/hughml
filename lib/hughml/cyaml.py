@@ -4,7 +4,7 @@ __all__ = [
     'CBaseDumper', 'CSafeDumper', 'CDumper'
 ]
 
-from _yaml import CParser, CEmitter
+from _hughml import CParser, CEmitter
 
 from constructor import *
 

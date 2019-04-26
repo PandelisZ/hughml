@@ -1,1 +1,1 @@
-[str, yaml.Loader, yaml.dump, abs, yaml.tokens]
+[str, hughml.Loader, hughml.dump, abs, hughml.tokens]

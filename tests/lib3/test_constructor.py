@@ -1,9 +1,9 @@
 
-import yaml
+import hughml
 import pprint
 
 import datetime
-import yaml.tokens
+import hughml.tokens
 
 def execute(code):
     global value
@@ -11,14 +11,14 @@ def execute(code):
     return value
 
 def _make_objects():
-    global MyLoader, MyDumper, MyTestClass1, MyTestClass2, MyTestClass3, YAMLObject1, YAMLObject2,  \
+    global MyLoader, MyDumper, MyTestClass1, MyTestClass2, MyTestClass3, hughmlObject1, hughmlObject2,  \
             AnObject, AnInstance, AState, ACustomState, InitArgs, InitArgsWithState,    \
             NewArgs, NewArgsWithState, Reduce, ReduceWithState, MyInt, MyList, MyDict,  \
             FixedOffset, today, execute
 
-    class MyLoader(yaml.Loader):
+    class MyLoader(hughml.Loader):
         pass
-    class MyDumper(yaml.Dumper):
+    class MyDumper(hughml.Dumper):
         pass
 
     class MyTestClass1:
@@ -38,52 +38,52 @@ def _make_objects():
     def represent1(representer, native):
         return representer.represent_mapping("!tag1", native.__dict__)
 
-    yaml.add_constructor("!tag1", construct1, Loader=MyLoader)
-    yaml.add_representer(MyTestClass1, represent1, Dumper=MyDumper)
+    hughml.add_constructor("!tag1", construct1, Loader=MyLoader)
+    hughml.add_representer(MyTestClass1, represent1, Dumper=MyDumper)
 
-    class MyTestClass2(MyTestClass1, yaml.YAMLObject):
-        yaml_loader = MyLoader
-        yaml_dumper = MyDumper
-        yaml_tag = "!tag2"
-        def from_yaml(cls, constructor, node):
-            x = constructor.construct_yaml_int(node)
+    class MyTestClass2(MyTestClass1, hughml.hughmlObject):
+        hughml_loader = MyLoader
+        hughml_dumper = MyDumper
+        hughml_tag = "!tag2"
+        def from_hughml(cls, constructor, node):
+            x = constructor.construct_hughml_int(node)
             return cls(x=x)
-        from_yaml = classmethod(from_yaml)
-        def to_yaml(cls, representer, native):
-            return representer.represent_scalar(cls.yaml_tag, str(native.x))
-        to_yaml = classmethod(to_yaml)
+        from_hughml = classmethod(from_hughml)
+        def to_hughml(cls, representer, native):
+            return representer.represent_scalar(cls.hughml_tag, str(native.x))
+        to_hughml = classmethod(to_hughml)
 
     class MyTestClass3(MyTestClass2):
-        yaml_tag = "!tag3"
-        def from_yaml(cls, constructor, node):
+        hughml_tag = "!tag3"
+        def from_hughml(cls, constructor, node):
             mapping = constructor.construct_mapping(node)
             if '=' in mapping:
                 x = mapping['=']
                 del mapping['=']
                 mapping['x'] = x
             return cls(**mapping)
-        from_yaml = classmethod(from_yaml)
-        def to_yaml(cls, representer, native):
-            return representer.represent_mapping(cls.yaml_tag, native.__dict__)
-        to_yaml = classmethod(to_yaml)
+        from_hughml = classmethod(from_hughml)
+        def to_hughml(cls, representer, native):
+            return representer.represent_mapping(cls.hughml_tag, native.__dict__)
+        to_hughml = classmethod(to_hughml)
 
-    class YAMLObject1(yaml.YAMLObject):
-        yaml_loader = MyLoader
-        yaml_dumper = MyDumper
-        yaml_tag = '!foo'
+    class hughmlObject1(hughml.hughmlObject):
+        hughml_loader = MyLoader
+        hughml_dumper = MyDumper
+        hughml_tag = '!foo'
         def __init__(self, my_parameter=None, my_another_parameter=None):
             self.my_parameter = my_parameter
             self.my_another_parameter = my_another_parameter
         def __eq__(self, other):
-            if isinstance(other, YAMLObject1):
+            if isinstance(other, hughmlObject1):
                 return self.__class__, self.__dict__ == other.__class__, other.__dict__
             else:
                 return False
 
-    class YAMLObject2(yaml.YAMLObject):
-        yaml_loader = MyLoader
-        yaml_dumper = MyDumper
-        yaml_tag = '!bar'
+    class hughmlObject2(hughml.hughmlObject):
+        hughml_loader = MyLoader
+        hughml_dumper = MyDumper
+        hughml_tag = '!bar'
         def __init__(self, foo=1, bar=2, baz=3):
             self.foo = foo
             self.bar = bar
@@ -95,7 +95,7 @@ def _make_objects():
             self.bar = state[2]
             self.baz = state[3]
         def __eq__(self, other):
-            if isinstance(other, YAMLObject2):
+            if isinstance(other, hughmlObject2):
                 return self.__class__, self.__dict__ == other.__class__, other.__dict__
             else:
                 return False
@@ -228,7 +228,7 @@ def test_constructor_types(data_filename, code_filename, verbose=False):
     native1 = None
     native2 = None
     try:
-        native1 = list(yaml.load_all(open(data_filename, 'rb'), Loader=MyLoader))
+        native1 = list(hughml.load_all(open(data_filename, 'rb'), Loader=MyLoader))
         if len(native1) == 1:
             native1 = native1[0]
         native2 = _load_code(open(code_filename, 'rb').read())

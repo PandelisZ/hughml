@@ -26,10 +26,10 @@
 
 __all__ = ['Scanner', 'ScannerError']
 
-from .error import MarkedYAMLError
+from .error import MarkedhughmlError
 from .tokens import *
 
-class ScannerError(MarkedYAMLError):
+class ScannerError(MarkedhughmlError):
     pass
 
 class SimpleKey:
@@ -278,7 +278,7 @@ class Scanner:
 
     def stale_possible_simple_keys(self):
         # Remove entries that are no longer possible simple keys. According to
-        # the YAML specification, simple keys
+        # the hughml specification, simple keys
         # - should be limited to a single line,
         # - should be no longer than 1024 characters.
         # Disabling this procedure will allow simple keys of any length and
@@ -313,7 +313,7 @@ class Scanner:
         # Remove the saved possible key position at the current flow level.
         if self.flow_level in self.possible_simple_keys:
             key = self.possible_simple_keys[self.flow_level]
-            
+
             if key.required:
                 raise ScannerError("while scanning a simple key", key.mark,
                         "could not find expected ':'", self.get_mark())
@@ -362,11 +362,11 @@ class Scanner:
 
         # Read the token.
         mark = self.get_mark()
-        
+
         # Add STREAM-START.
         self.tokens.append(StreamStartToken(mark, mark,
             encoding=self.encoding))
-        
+
 
     def fetch_stream_end(self):
 
@@ -380,7 +380,7 @@ class Scanner:
 
         # Read the token.
         mark = self.get_mark()
-        
+
         # Add STREAM-END.
         self.tokens.append(StreamEndToken(mark, mark))
 
@@ -388,7 +388,7 @@ class Scanner:
         self.done = True
 
     def fetch_directive(self):
-        
+
         # Set the current intendation to -1.
         self.unwind_indent(-1)
 
@@ -515,7 +515,7 @@ class Scanner:
         self.tokens.append(BlockEntryToken(start_mark, end_mark))
 
     def fetch_key(self):
-        
+
         # Block context needs additional checks.
         if not self.flow_level:
 
@@ -565,7 +565,7 @@ class Scanner:
 
         # It must be a part of a complex key.
         else:
-            
+
             # Block context needs additional checks.
             # (Do we really need them? They will be caught by the parser
             # anyway.)
@@ -790,8 +790,8 @@ class Scanner:
         self.forward()
         name = self.scan_directive_name(start_mark)
         value = None
-        if name == 'YAML':
-            value = self.scan_yaml_directive_value(start_mark)
+        if name == 'hughml':
+            value = self.scan_hughml_directive_value(start_mark)
             end_mark = self.get_mark()
         elif name == 'TAG':
             value = self.scan_tag_directive_value(start_mark)
@@ -824,24 +824,24 @@ class Scanner:
                     % ch, self.get_mark())
         return value
 
-    def scan_yaml_directive_value(self, start_mark):
+    def scan_hughml_directive_value(self, start_mark):
         # See the specification for details.
         while self.peek() == ' ':
             self.forward()
-        major = self.scan_yaml_directive_number(start_mark)
+        major = self.scan_hughml_directive_number(start_mark)
         if self.peek() != '.':
             raise ScannerError("while scanning a directive", start_mark,
                     "expected a digit or '.', but found %r" % self.peek(),
                     self.get_mark())
         self.forward()
-        minor = self.scan_yaml_directive_number(start_mark)
+        minor = self.scan_hughml_directive_number(start_mark)
         if self.peek() not in '\0 \r\n\x85\u2028\u2029':
             raise ScannerError("while scanning a directive", start_mark,
                     "expected a digit or ' ', but found %r" % self.peek(),
                     self.get_mark())
         return (major, minor)
 
-    def scan_yaml_directive_number(self, start_mark):
+    def scan_hughml_directive_number(self, start_mark):
         # See the specification for details.
         ch = self.peek()
         if not ('0' <= ch <= '9'):
@@ -1017,14 +1017,14 @@ class Scanner:
                 # Unfortunately, folding rules are ambiguous.
                 #
                 # This is the folding according to the specification:
-                
+
                 if folded and line_break == '\n'    \
                         and leading_non_space and self.peek() not in ' \t':
                     if not breaks:
                         chunks.append(' ')
                 else:
                     chunks.append(line_break)
-                
+
                 # This is Clark Evans's interpretation (also in the spec
                 # examples):
                 #
@@ -1311,7 +1311,7 @@ class Scanner:
     def scan_plain_spaces(self, indent, start_mark):
         # See the specification for details.
         # The specification is really confusing about tabs in plain scalars.
-        # We just forbid them completely. Do not use tabs in YAML!
+        # We just forbid them completely. Do not use tabs in hughml!
         chunks = []
         length = 0
         while self.peek(length) in ' ':

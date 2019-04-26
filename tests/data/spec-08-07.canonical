@@ -1,8 +1,8 @@
-%YAML 1.1
+%hughml 1.1
 ---
 !!seq [
-  !<tag:yaml.org,2002:str> "12",
-  !<tag:yaml.org,2002:int> "12",
-#  !<tag:yaml.org,2002:str> "12",
-  !<tag:yaml.org,2002:int> "12",
+  !<tag:hughml.org,2002:str> "12",
+  !<tag:hughml.org,2002:int> "12",
+#  !<tag:hughml.org,2002:str> "12",
+  !<tag:hughml.org,2002:int> "12",
 ]

@@ -1,5 +1,5 @@
 %TAG !      !foo
-%TAG !yaml! tag:yaml.org,2002:
+%TAG !hughml! tag:hughml.org,2002:
 ---
 - !bar "baz"
-- !yaml!str "string"
+- !hughml!str "string"

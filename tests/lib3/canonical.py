@@ -1,7 +1,7 @@
 
-import yaml, yaml.composer, yaml.constructor, yaml.resolver
+import hughml, hughml.composer, hughml.constructor, hughml.resolver
 
-class CanonicalError(yaml.YAMLError):
+class CanonicalError(hughml.hughmlError):
     pass
 
 class CanonicalScanner:
@@ -47,39 +47,39 @@ class CanonicalScanner:
         return token.value
 
     def scan(self):
-        self.tokens.append(yaml.StreamStartToken(None, None))
+        self.tokens.append(hughml.StreamStartToken(None, None))
         while True:
             self.find_token()
             ch = self.data[self.index]
             if ch == '\0':
-                self.tokens.append(yaml.StreamEndToken(None, None))
+                self.tokens.append(hughml.StreamEndToken(None, None))
                 break
             elif ch == '%':
                 self.tokens.append(self.scan_directive())
             elif ch == '-' and self.data[self.index:self.index+3] == '---':
                 self.index += 3
-                self.tokens.append(yaml.DocumentStartToken(None, None))
+                self.tokens.append(hughml.DocumentStartToken(None, None))
             elif ch == '[':
                 self.index += 1
-                self.tokens.append(yaml.FlowSequenceStartToken(None, None))
+                self.tokens.append(hughml.FlowSequenceStartToken(None, None))
             elif ch == '{':
                 self.index += 1
-                self.tokens.append(yaml.FlowMappingStartToken(None, None))
+                self.tokens.append(hughml.FlowMappingStartToken(None, None))
             elif ch == ']':
                 self.index += 1
-                self.tokens.append(yaml.FlowSequenceEndToken(None, None))
+                self.tokens.append(hughml.FlowSequenceEndToken(None, None))
             elif ch == '}':
                 self.index += 1
-                self.tokens.append(yaml.FlowMappingEndToken(None, None))
+                self.tokens.append(hughml.FlowMappingEndToken(None, None))
             elif ch == '?':
                 self.index += 1
-                self.tokens.append(yaml.KeyToken(None, None))
+                self.tokens.append(hughml.KeyToken(None, None))
             elif ch == ':':
                 self.index += 1
-                self.tokens.append(yaml.ValueToken(None, None))
+                self.tokens.append(hughml.ValueToken(None, None))
             elif ch == ',':
                 self.index += 1
-                self.tokens.append(yaml.FlowEntryToken(None, None))
+                self.tokens.append(hughml.FlowEntryToken(None, None))
             elif ch == '*' or ch == '&':
                 self.tokens.append(self.scan_alias())
             elif ch == '!':
@@ -90,21 +90,21 @@ class CanonicalScanner:
                 raise CanonicalError("invalid token")
         self.scanned = True
 
-    DIRECTIVE = '%YAML 1.1'
+    DIRECTIVE = '%hughml 1.1'
 
     def scan_directive(self):
         if self.data[self.index:self.index+len(self.DIRECTIVE)] == self.DIRECTIVE and \
                 self.data[self.index+len(self.DIRECTIVE)] in ' \n\0':
             self.index += len(self.DIRECTIVE)
-            return yaml.DirectiveToken('YAML', (1, 1), None, None)
+            return hughml.DirectiveToken('hughml', (1, 1), None, None)
         else:
             raise CanonicalError("invalid directive")
 
     def scan_alias(self):
         if self.data[self.index] == '*':
-            TokenClass = yaml.AliasToken
+            TokenClass = hughml.AliasToken
         else:
-            TokenClass = yaml.AnchorToken
+            TokenClass = hughml.AnchorToken
         self.index += 1
         start = self.index
         while self.data[self.index] not in ', \n\0':
@@ -121,12 +121,12 @@ class CanonicalScanner:
         if not value:
             value = '!'
         elif value[0] == '!':
-            value = 'tag:yaml.org,2002:'+value[1:]
+            value = 'tag:hughml.org,2002:'+value[1:]
         elif value[0] == '<' and value[-1] == '>':
             value = value[1:-1]
         else:
             value = '!'+value
-        return yaml.TagToken(value, None, None)
+        return hughml.TagToken(value, None, None)
 
     QUOTE_CODES = {
         'x': 2,
@@ -191,7 +191,7 @@ class CanonicalScanner:
                 self.index += 1
         chunks.append(self.data[start:self.index])
         self.index += 1
-        return yaml.ScalarToken(''.join(chunks), False, None, None)
+        return hughml.ScalarToken(''.join(chunks), False, None, None)
 
     def find_token(self):
         found = False
@@ -217,77 +217,77 @@ class CanonicalParser:
 
     # stream: STREAM-START document* STREAM-END
     def parse_stream(self):
-        self.get_token(yaml.StreamStartToken)
-        self.events.append(yaml.StreamStartEvent(None, None))
-        while not self.check_token(yaml.StreamEndToken):
-            if self.check_token(yaml.DirectiveToken, yaml.DocumentStartToken):
+        self.get_token(hughml.StreamStartToken)
+        self.events.append(hughml.StreamStartEvent(None, None))
+        while not self.check_token(hughml.StreamEndToken):
+            if self.check_token(hughml.DirectiveToken, hughml.DocumentStartToken):
                 self.parse_document()
             else:
                 raise CanonicalError("document is expected, got "+repr(self.tokens[0]))
-        self.get_token(yaml.StreamEndToken)
-        self.events.append(yaml.StreamEndEvent(None, None))
+        self.get_token(hughml.StreamEndToken)
+        self.events.append(hughml.StreamEndEvent(None, None))
 
     # document: DIRECTIVE? DOCUMENT-START node
     def parse_document(self):
         node = None
-        if self.check_token(yaml.DirectiveToken):
-            self.get_token(yaml.DirectiveToken)
-        self.get_token(yaml.DocumentStartToken)
-        self.events.append(yaml.DocumentStartEvent(None, None))
+        if self.check_token(hughml.DirectiveToken):
+            self.get_token(hughml.DirectiveToken)
+        self.get_token(hughml.DocumentStartToken)
+        self.events.append(hughml.DocumentStartEvent(None, None))
         self.parse_node()
-        self.events.append(yaml.DocumentEndEvent(None, None))
+        self.events.append(hughml.DocumentEndEvent(None, None))
 
     # node: ALIAS | ANCHOR? TAG? (SCALAR|sequence|mapping)
     def parse_node(self):
-        if self.check_token(yaml.AliasToken):
-            self.events.append(yaml.AliasEvent(self.get_token_value(), None, None))
+        if self.check_token(hughml.AliasToken):
+            self.events.append(hughml.AliasEvent(self.get_token_value(), None, None))
         else:
             anchor = None
-            if self.check_token(yaml.AnchorToken):
+            if self.check_token(hughml.AnchorToken):
                 anchor = self.get_token_value()
             tag = None
-            if self.check_token(yaml.TagToken):
+            if self.check_token(hughml.TagToken):
                 tag = self.get_token_value()
-            if self.check_token(yaml.ScalarToken):
-                self.events.append(yaml.ScalarEvent(anchor, tag, (False, False), self.get_token_value(), None, None))
-            elif self.check_token(yaml.FlowSequenceStartToken):
-                self.events.append(yaml.SequenceStartEvent(anchor, tag, None, None))
+            if self.check_token(hughml.ScalarToken):
+                self.events.append(hughml.ScalarEvent(anchor, tag, (False, False), self.get_token_value(), None, None))
+            elif self.check_token(hughml.FlowSequenceStartToken):
+                self.events.append(hughml.SequenceStartEvent(anchor, tag, None, None))
                 self.parse_sequence()
-            elif self.check_token(yaml.FlowMappingStartToken):
-                self.events.append(yaml.MappingStartEvent(anchor, tag, None, None))
+            elif self.check_token(hughml.FlowMappingStartToken):
+                self.events.append(hughml.MappingStartEvent(anchor, tag, None, None))
                 self.parse_mapping()
             else:
                 raise CanonicalError("SCALAR, '[', or '{' is expected, got "+repr(self.tokens[0]))
 
     # sequence: SEQUENCE-START (node (ENTRY node)*)? ENTRY? SEQUENCE-END
     def parse_sequence(self):
-        self.get_token(yaml.FlowSequenceStartToken)
-        if not self.check_token(yaml.FlowSequenceEndToken):
+        self.get_token(hughml.FlowSequenceStartToken)
+        if not self.check_token(hughml.FlowSequenceEndToken):
             self.parse_node()
-            while not self.check_token(yaml.FlowSequenceEndToken):
-                self.get_token(yaml.FlowEntryToken)
-                if not self.check_token(yaml.FlowSequenceEndToken):
+            while not self.check_token(hughml.FlowSequenceEndToken):
+                self.get_token(hughml.FlowEntryToken)
+                if not self.check_token(hughml.FlowSequenceEndToken):
                     self.parse_node()
-        self.get_token(yaml.FlowSequenceEndToken)
-        self.events.append(yaml.SequenceEndEvent(None, None))
+        self.get_token(hughml.FlowSequenceEndToken)
+        self.events.append(hughml.SequenceEndEvent(None, None))
 
     # mapping: MAPPING-START (map_entry (ENTRY map_entry)*)? ENTRY? MAPPING-END
     def parse_mapping(self):
-        self.get_token(yaml.FlowMappingStartToken)
-        if not self.check_token(yaml.FlowMappingEndToken):
+        self.get_token(hughml.FlowMappingStartToken)
+        if not self.check_token(hughml.FlowMappingEndToken):
             self.parse_map_entry()
-            while not self.check_token(yaml.FlowMappingEndToken):
-                self.get_token(yaml.FlowEntryToken)
-                if not self.check_token(yaml.FlowMappingEndToken):
+            while not self.check_token(hughml.FlowMappingEndToken):
+                self.get_token(hughml.FlowEntryToken)
+                if not self.check_token(hughml.FlowMappingEndToken):
                     self.parse_map_entry()
-        self.get_token(yaml.FlowMappingEndToken)
-        self.events.append(yaml.MappingEndEvent(None, None))
+        self.get_token(hughml.FlowMappingEndToken)
+        self.events.append(hughml.MappingEndEvent(None, None))
 
     # map_entry: KEY node VALUE node
     def parse_map_entry(self):
-        self.get_token(yaml.KeyToken)
+        self.get_token(hughml.KeyToken)
         self.parse_node()
-        self.get_token(yaml.ValueToken)
+        self.get_token(hughml.ValueToken)
         self.parse_node()
 
     def parse(self):
@@ -316,46 +316,46 @@ class CanonicalParser:
         return self.events[0]
 
 class CanonicalLoader(CanonicalScanner, CanonicalParser,
-        yaml.composer.Composer, yaml.constructor.Constructor, yaml.resolver.Resolver):
+        hughml.composer.Composer, hughml.constructor.Constructor, hughml.resolver.Resolver):
 
     def __init__(self, stream):
         if hasattr(stream, 'read'):
             stream = stream.read()
         CanonicalScanner.__init__(self, stream)
         CanonicalParser.__init__(self)
-        yaml.composer.Composer.__init__(self)
-        yaml.constructor.Constructor.__init__(self)
-        yaml.resolver.Resolver.__init__(self)
+        hughml.composer.Composer.__init__(self)
+        hughml.constructor.Constructor.__init__(self)
+        hughml.resolver.Resolver.__init__(self)
 
-yaml.CanonicalLoader = CanonicalLoader
+hughml.CanonicalLoader = CanonicalLoader
 
 def canonical_scan(stream):
-    return yaml.scan(stream, Loader=CanonicalLoader)
+    return hughml.scan(stream, Loader=CanonicalLoader)
 
-yaml.canonical_scan = canonical_scan
+hughml.canonical_scan = canonical_scan
 
 def canonical_parse(stream):
-    return yaml.parse(stream, Loader=CanonicalLoader)
+    return hughml.parse(stream, Loader=CanonicalLoader)
 
-yaml.canonical_parse = canonical_parse
+hughml.canonical_parse = canonical_parse
 
 def canonical_compose(stream):
-    return yaml.compose(stream, Loader=CanonicalLoader)
+    return hughml.compose(stream, Loader=CanonicalLoader)
 
-yaml.canonical_compose = canonical_compose
+hughml.canonical_compose = canonical_compose
 
 def canonical_compose_all(stream):
-    return yaml.compose_all(stream, Loader=CanonicalLoader)
+    return hughml.compose_all(stream, Loader=CanonicalLoader)
 
-yaml.canonical_compose_all = canonical_compose_all
+hughml.canonical_compose_all = canonical_compose_all
 
 def canonical_load(stream):
-    return yaml.load(stream, Loader=CanonicalLoader)
+    return hughml.load(stream, Loader=CanonicalLoader)
 
-yaml.canonical_load = canonical_load
+hughml.canonical_load = canonical_load
 
 def canonical_load_all(stream):
-    return yaml.load_all(stream, Loader=CanonicalLoader)
+    return hughml.load_all(stream, Loader=CanonicalLoader)
 
-yaml.canonical_load_all = canonical_load_all
+hughml.canonical_load_all = canonical_load_all
 

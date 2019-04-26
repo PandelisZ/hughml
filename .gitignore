@@ -1,7 +1,7 @@
 # build outputs
 /dist/*
 /build/*
-/ext/_yaml.c
+/ext/_hughml.c
 MANIFEST
 
 # cached Python binaries

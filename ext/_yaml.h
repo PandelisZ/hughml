@@ -1,5 +1,5 @@
 
-#include <yaml.h>
+#include <hughml.h>
 
 #if PY_MAJOR_VERSION < 3
 

@@ -10,10 +10,10 @@ from .dumper import *
 
 __version__ = '5.1'
 try:
-    from .cyaml import *
-    __with_libyaml__ = True
+    from .chughml import *
+    __with_libhughml__ = True
 except ImportError:
-    __with_libyaml__ = False
+    __with_libhughml__ = False
 
 import io
 
@@ -23,7 +23,7 @@ import io
 
 # 'Global' warnings state:
 _warnings_enabled = {
-    'YAMLLoadWarning': True,
+    'hughmlLoadWarning': True,
 }
 
 # Get or set global warnings' state
@@ -37,27 +37,27 @@ def warnings(settings=None):
                 _warnings_enabled[key] = settings[key]
 
 # Warn when load() is called without Loader=...
-class YAMLLoadWarning(RuntimeWarning):
+class hughmlLoadWarning(RuntimeWarning):
     pass
 
 def load_warning(method):
-    if _warnings_enabled['YAMLLoadWarning'] is False:
+    if _warnings_enabled['hughmlLoadWarning'] is False:
         return
 
     import warnings
 
     message = (
-        "calling yaml.%s() without Loader=... is deprecated, as the "
+        "calling hughml.%s() without Loader=... is deprecated, as the "
         "default Loader is unsafe. Please read "
-        "https://msg.pyyaml.org/load for full details."
+        "https://msg.pyhughml.org/load for full details."
     ) % method
 
-    warnings.warn(message, YAMLLoadWarning, stacklevel=3)
+    warnings.warn(message, hughmlLoadWarning, stacklevel=3)
 
 #------------------------------------------------------------------------------
 def scan(stream, Loader=Loader):
     """
-    Scan a YAML stream and produce scanning tokens.
+    Scan a hughml stream and produce scanning tokens.
     """
     loader = Loader(stream)
     try:
@@ -68,7 +68,7 @@ def scan(stream, Loader=Loader):
 
 def parse(stream, Loader=Loader):
     """
-    Parse a YAML stream and produce parsing events.
+    Parse a hughml stream and produce parsing events.
     """
     loader = Loader(stream)
     try:
@@ -79,7 +79,7 @@ def parse(stream, Loader=Loader):
 
 def compose(stream, Loader=Loader):
     """
-    Parse the first YAML document in a stream
+    Parse the first hughml document in a stream
     and produce the corresponding representation tree.
     """
     loader = Loader(stream)
@@ -90,7 +90,7 @@ def compose(stream, Loader=Loader):
 
 def compose_all(stream, Loader=Loader):
     """
-    Parse all YAML documents in a stream
+    Parse all hughml documents in a stream
     and produce corresponding representation trees.
     """
     loader = Loader(stream)
@@ -102,7 +102,7 @@ def compose_all(stream, Loader=Loader):
 
 def load(stream, Loader=None):
     """
-    Parse the first YAML document in a stream
+    Parse the first hughml document in a stream
     and produce the corresponding Python object.
     """
     if Loader is None:
@@ -117,7 +117,7 @@ def load(stream, Loader=None):
 
 def load_all(stream, Loader=None):
     """
-    Parse all YAML documents in a stream
+    Parse all hughml documents in a stream
     and produce corresponding Python objects.
     """
     if Loader is None:
@@ -133,7 +133,7 @@ def load_all(stream, Loader=None):
 
 def full_load(stream):
     """
-    Parse the first YAML document in a stream
+    Parse the first hughml document in a stream
     and produce the corresponding Python object.
 
     Resolve all tags except those known to be
@@ -143,7 +143,7 @@ def full_load(stream):
 
 def full_load_all(stream):
     """
-    Parse all YAML documents in a stream
+    Parse all hughml documents in a stream
     and produce corresponding Python objects.
 
     Resolve all tags except those known to be
@@ -153,27 +153,27 @@ def full_load_all(stream):
 
 def safe_load(stream):
     """
-    Parse the first YAML document in a stream
+    Parse the first hughml document in a stream
     and produce the corresponding Python object.
 
-    Resolve only basic YAML tags. This is known
+    Resolve only basic hughml tags. This is known
     to be safe for untrusted input.
     """
     return load(stream, SafeLoader)
 
 def safe_load_all(stream):
     """
-    Parse all YAML documents in a stream
+    Parse all hughml documents in a stream
     and produce corresponding Python objects.
 
-    Resolve only basic YAML tags. This is known
+    Resolve only basic hughml tags. This is known
     to be safe for untrusted input.
     """
     return load_all(stream, SafeLoader)
 
 def unsafe_load(stream):
     """
-    Parse the first YAML document in a stream
+    Parse the first hughml document in a stream
     and produce the corresponding Python object.
 
     Resolve all tags, even those known to be
@@ -183,7 +183,7 @@ def unsafe_load(stream):
 
 def unsafe_load_all(stream):
     """
-    Parse all YAML documents in a stream
+    Parse all hughml documents in a stream
     and produce corresponding Python objects.
 
     Resolve all tags, even those known to be
@@ -195,7 +195,7 @@ def emit(events, stream=None, Dumper=Dumper,
         canonical=None, indent=None, width=None,
         allow_unicode=None, line_break=None):
     """
-    Emit YAML parsing events into a stream.
+    Emit hughml parsing events into a stream.
     If stream is None, return the produced string instead.
     """
     getvalue = None
@@ -218,7 +218,7 @@ def serialize_all(nodes, stream=None, Dumper=Dumper,
         encoding=None, explicit_start=None, explicit_end=None,
         version=None, tags=None):
     """
-    Serialize a sequence of representation trees into a YAML stream.
+    Serialize a sequence of representation trees into a hughml stream.
     If stream is None, return the produced string instead.
     """
     getvalue = None
@@ -244,7 +244,7 @@ def serialize_all(nodes, stream=None, Dumper=Dumper,
 
 def serialize(node, stream=None, Dumper=Dumper, **kwds):
     """
-    Serialize a representation tree into a YAML stream.
+    Serialize a representation tree into a hughml stream.
     If stream is None, return the produced string instead.
     """
     return serialize_all([node], stream, Dumper=Dumper, **kwds)
@@ -256,7 +256,7 @@ def dump_all(documents, stream=None, Dumper=Dumper,
         encoding=None, explicit_start=None, explicit_end=None,
         version=None, tags=None, sort_keys=True):
     """
-    Serialize a sequence of Python objects into a YAML stream.
+    Serialize a sequence of Python objects into a hughml stream.
     If stream is None, return the produced string instead.
     """
     getvalue = None
@@ -284,23 +284,23 @@ def dump_all(documents, stream=None, Dumper=Dumper,
 
 def dump(data, stream=None, Dumper=Dumper, **kwds):
     """
-    Serialize a Python object into a YAML stream.
+    Serialize a Python object into a hughml stream.
     If stream is None, return the produced string instead.
     """
     return dump_all([data], stream, Dumper=Dumper, **kwds)
 
 def safe_dump_all(documents, stream=None, **kwds):
     """
-    Serialize a sequence of Python objects into a YAML stream.
-    Produce only basic YAML tags.
+    Serialize a sequence of Python objects into a hughml stream.
+    Produce only basic hughml tags.
     If stream is None, return the produced string instead.
     """
     return dump_all(documents, stream, Dumper=SafeDumper, **kwds)
 
 def safe_dump(data, stream=None, **kwds):
     """
-    Serialize a Python object into a YAML stream.
-    Produce only basic YAML tags.
+    Serialize a Python object into a hughml stream.
+    Produce only basic hughml tags.
     If stream is None, return the produced string instead.
     """
     return dump_all([data], stream, Dumper=SafeDumper, **kwds)
@@ -361,42 +361,42 @@ def add_multi_representer(data_type, multi_representer, Dumper=Dumper):
     """
     Dumper.add_multi_representer(data_type, multi_representer)
 
-class YAMLObjectMetaclass(type):
+class hughmlObjectMetaclass(type):
     """
-    The metaclass for YAMLObject.
+    The metaclass for hughmlObject.
     """
     def __init__(cls, name, bases, kwds):
-        super(YAMLObjectMetaclass, cls).__init__(name, bases, kwds)
-        if 'yaml_tag' in kwds and kwds['yaml_tag'] is not None:
-            cls.yaml_loader.add_constructor(cls.yaml_tag, cls.from_yaml)
-            cls.yaml_dumper.add_representer(cls, cls.to_yaml)
+        super(hughmlObjectMetaclass, cls).__init__(name, bases, kwds)
+        if 'hughml_tag' in kwds and kwds['hughml_tag'] is not None:
+            cls.hughml_loader.add_constructor(cls.hughml_tag, cls.from_hughml)
+            cls.hughml_dumper.add_representer(cls, cls.to_hughml)
 
-class YAMLObject(metaclass=YAMLObjectMetaclass):
+class hughmlObject(metaclass=hughmlObjectMetaclass):
     """
-    An object that can dump itself to a YAML stream
-    and load itself from a YAML stream.
+    An object that can dump itself to a hughml stream
+    and load itself from a hughml stream.
     """
 
     __slots__ = ()  # no direct instantiation, so allow immutable subclasses
 
-    yaml_loader = Loader
-    yaml_dumper = Dumper
+    hughml_loader = Loader
+    hughml_dumper = Dumper
 
-    yaml_tag = None
-    yaml_flow_style = None
+    hughml_tag = None
+    hughml_flow_style = None
 
     @classmethod
-    def from_yaml(cls, loader, node):
+    def from_hughml(cls, loader, node):
         """
         Convert a representation node to a Python object.
         """
-        return loader.construct_yaml_object(node, cls)
+        return loader.construct_hughml_object(node, cls)
 
     @classmethod
-    def to_yaml(cls, dumper, data):
+    def to_hughml(cls, dumper, data):
         """
         Convert a Python object to a representation node.
         """
-        return dumper.represent_yaml_object(cls.yaml_tag, data, cls,
-                flow_style=cls.yaml_flow_style)
+        return dumper.represent_hughml_object(cls.hughml_tag, data, cls,
+                flow_style=cls.hughml_flow_style)
 

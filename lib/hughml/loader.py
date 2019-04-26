@@ -1,12 +1,12 @@
 
 __all__ = ['BaseLoader', 'FullLoader', 'SafeLoader', 'Loader', 'UnsafeLoader']
 
-from .reader import *
-from .scanner import *
-from .parser import *
-from .composer import *
-from .constructor import *
-from .resolver import *
+from reader import *
+from scanner import *
+from parser import *
+from composer import *
+from constructor import *
+from resolver import *
 
 class BaseLoader(Reader, Scanner, Parser, Composer, BaseConstructor, BaseResolver):
 
@@ -50,7 +50,7 @@ class Loader(Reader, Scanner, Parser, Composer, Constructor, Resolver):
 
 # UnsafeLoader is the same as Loader (which is and was always unsafe on
 # untrusted input). Use of either Loader or UnsafeLoader should be rare, since
-# FullLoad should be able to load almost all YAML safely. Loader is left intact
+# FullLoad should be able to load almost all hughml safely. Loader is left intact
 # to ensure backwards compatability.
 class UnsafeLoader(Reader, Scanner, Parser, Composer, Constructor, Resolver):
 

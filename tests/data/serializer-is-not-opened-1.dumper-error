@@ -1,2 +1,2 @@
-dumper = yaml.Dumper(StringIO())
+dumper = hughml.Dumper(StringIO())
 dumper.close()

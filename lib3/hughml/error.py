@@ -1,5 +1,5 @@
 
-__all__ = ['Mark', 'YAMLError', 'MarkedYAMLError']
+__all__ = ['Mark', 'hughmlError', 'MarkedhughmlError']
 
 class Mark:
 
@@ -42,10 +42,10 @@ class Mark:
             where += ":\n"+snippet
         return where
 
-class YAMLError(Exception):
+class hughmlError(Exception):
     pass
 
-class MarkedYAMLError(YAMLError):
+class MarkedhughmlError(hughmlError):
 
     def __init__(self, context=None, context_mark=None,
             problem=None, problem_mark=None, note=None):

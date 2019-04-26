@@ -1,5 +1,5 @@
 
-import yaml
+import hughml
 import codecs, StringIO, tempfile, os, os.path
 
 def _unicode_open(file, encoding, errors='strict'):
@@ -17,7 +17,7 @@ def _unicode_open(file, encoding, errors='strict'):
 def test_unicode_input(unicode_filename, verbose=False):
     data = open(unicode_filename, 'rb').read().decode('utf-8')
     value = ' '.join(data.split())
-    output = yaml.full_load(_unicode_open(StringIO.StringIO(data.encode('utf-8')), 'utf-8'))
+    output = hughml.full_load(_unicode_open(StringIO.StringIO(data.encode('utf-8')), 'utf-8'))
     assert output == value, (output, value)
     for input in [data, data.encode('utf-8'),
                     codecs.BOM_UTF8+data.encode('utf-8'),
@@ -25,9 +25,9 @@ def test_unicode_input(unicode_filename, verbose=False):
                     codecs.BOM_UTF16_LE+data.encode('utf-16-le')]:
         if verbose:
             print "INPUT:", repr(input[:10]), "..."
-        output = yaml.full_load(input)
+        output = hughml.full_load(input)
         assert output == value, (output, value)
-        output = yaml.full_load(StringIO.StringIO(input))
+        output = hughml.full_load(StringIO.StringIO(input))
         assert output == value, (output, value)
 
 test_unicode_input.unittest = ['.unicode']
@@ -40,15 +40,15 @@ def test_unicode_input_errors(unicode_filename, verbose=False):
             codecs.BOM_UTF8+data.encode('utf-16-le')]:
 
         try:
-            yaml.full_load(input)
-        except yaml.YAMLError, exc:
+            hughml.full_load(input)
+        except hughml.hughmlError, exc:
             if verbose:
                 print exc
         else:
             raise AssertionError("expected an exception")
         try:
-            yaml.full_load(StringIO.StringIO(input))
-        except yaml.YAMLError, exc:
+            hughml.full_load(StringIO.StringIO(input))
+        except hughml.hughmlError, exc:
             if verbose:
                 print exc
         else:
@@ -60,14 +60,14 @@ def test_unicode_output(unicode_filename, verbose=False):
     data = open(unicode_filename, 'rb').read().decode('utf-8')
     value = ' '.join(data.split())
     for allow_unicode in [False, True]:
-        data1 = yaml.dump(value, allow_unicode=allow_unicode)
+        data1 = hughml.dump(value, allow_unicode=allow_unicode)
         for encoding in [None, 'utf-8', 'utf-16-be', 'utf-16-le']:
             stream = StringIO.StringIO()
-            yaml.dump(value, _unicode_open(stream, 'utf-8'), encoding=encoding, allow_unicode=allow_unicode)
+            hughml.dump(value, _unicode_open(stream, 'utf-8'), encoding=encoding, allow_unicode=allow_unicode)
             data2 = stream.getvalue()
-            data3 = yaml.dump(value, encoding=encoding, allow_unicode=allow_unicode)
+            data3 = hughml.dump(value, encoding=encoding, allow_unicode=allow_unicode)
             stream = StringIO.StringIO()
-            yaml.dump(value, stream, encoding=encoding, allow_unicode=allow_unicode)
+            hughml.dump(value, stream, encoding=encoding, allow_unicode=allow_unicode)
             data4 = stream.getvalue()
 
             assert isinstance(data1, str), (type(data1), encoding)
@@ -91,18 +91,18 @@ def test_file_output(unicode_filename, verbose=False):
     os.close(handle)
     try:
         stream = StringIO.StringIO()
-        yaml.dump(data, stream, allow_unicode=True)
+        hughml.dump(data, stream, allow_unicode=True)
         data1 = stream.getvalue()
         stream = open(filename, 'wb')
-        yaml.dump(data, stream, allow_unicode=True)
+        hughml.dump(data, stream, allow_unicode=True)
         stream.close()
         data2 = open(filename, 'rb').read()
         stream = open(filename, 'wb')
-        yaml.dump(data, stream, encoding='utf-16-le', allow_unicode=True)
+        hughml.dump(data, stream, encoding='utf-16-le', allow_unicode=True)
         stream.close()
         data3 = open(filename, 'rb').read().decode('utf-16-le')[1:].encode('utf-8')
         stream = _unicode_open(open(filename, 'wb'), 'utf-8')
-        yaml.dump(data, stream, allow_unicode=True)
+        hughml.dump(data, stream, allow_unicode=True)
         stream.close()
         data4 = open(filename, 'rb').read()
         assert data1 == data2, (data1, data2)
@@ -120,9 +120,9 @@ def test_unicode_transfer(unicode_filename, verbose=False):
         input = data
         if encoding is not None:
             input = (u'\ufeff'+input).encode(encoding)
-        output1 = yaml.emit(yaml.parse(input), allow_unicode=True)
+        output1 = hughml.emit(hughml.parse(input), allow_unicode=True)
         stream = StringIO.StringIO()
-        yaml.emit(yaml.parse(input), _unicode_open(stream, 'utf-8'),
+        hughml.emit(hughml.parse(input), _unicode_open(stream, 'utf-8'),
                             allow_unicode=True)
         output2 = stream.getvalue()
         if encoding is None:

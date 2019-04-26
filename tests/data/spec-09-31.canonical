@@ -1,4 +1,4 @@
-%YAML 1.1
+%hughml 1.1
 ---
 !!str "folded line\n\
       next line\n\n\

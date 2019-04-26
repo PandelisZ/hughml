@@ -5,6 +5,6 @@ if __name__ == '__main__':
     build_lib_ext = os.path.join('build', 'lib.%s-%s' % (distutils.util.get_platform(), sys.version[0:3]))
     sys.path.insert(0, build_lib)
     sys.path.insert(0, build_lib_ext)
-    import test_yaml, test_appliance
-    test_appliance.run(test_yaml)
+    import test_hughml, test_appliance
+    test_appliance.run(test_hughml)
 

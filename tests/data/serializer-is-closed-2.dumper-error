@@ -1,4 +1,4 @@
-dumper = yaml.Dumper(StringIO())
+dumper = hughml.Dumper(StringIO())
 dumper.open()
 dumper.close()
-dumper.serialize(yaml.ScalarNode(tag='!foo', value='bar'))
+dumper.serialize(hughml.ScalarNode(tag='!foo', value='bar'))

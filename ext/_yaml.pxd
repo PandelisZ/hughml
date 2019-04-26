@@ -1,5 +1,5 @@
 
-cdef extern from "_yaml.h":
+cdef extern from "_hughml.h":
 
     void malloc(int l)
     void memcpy(char *d, char *s, int l)
@@ -16,236 +16,236 @@ cdef extern from "_yaml.h":
 
     ctypedef enum:
         SIZEOF_VOID_P
-    ctypedef enum yaml_encoding_t:
-        YAML_ANY_ENCODING
-        YAML_UTF8_ENCODING
-        YAML_UTF16LE_ENCODING
-        YAML_UTF16BE_ENCODING
-    ctypedef enum yaml_break_t:
-        YAML_ANY_BREAK
-        YAML_CR_BREAK
-        YAML_LN_BREAK
-        YAML_CRLN_BREAK
-    ctypedef enum yaml_error_type_t:
-        YAML_NO_ERROR
-        YAML_MEMORY_ERROR
-        YAML_READER_ERROR
-        YAML_SCANNER_ERROR
-        YAML_PARSER_ERROR
-        YAML_WRITER_ERROR
-        YAML_EMITTER_ERROR
-    ctypedef enum yaml_scalar_style_t:
-        YAML_ANY_SCALAR_STYLE
-        YAML_PLAIN_SCALAR_STYLE
-        YAML_SINGLE_QUOTED_SCALAR_STYLE
-        YAML_DOUBLE_QUOTED_SCALAR_STYLE
-        YAML_LITERAL_SCALAR_STYLE
-        YAML_FOLDED_SCALAR_STYLE
-    ctypedef enum yaml_sequence_style_t:
-        YAML_ANY_SEQUENCE_STYLE
-        YAML_BLOCK_SEQUENCE_STYLE
-        YAML_FLOW_SEQUENCE_STYLE
-    ctypedef enum yaml_mapping_style_t:
-        YAML_ANY_MAPPING_STYLE
-        YAML_BLOCK_MAPPING_STYLE
-        YAML_FLOW_MAPPING_STYLE
-    ctypedef enum yaml_token_type_t:
-        YAML_NO_TOKEN
-        YAML_STREAM_START_TOKEN
-        YAML_STREAM_END_TOKEN
-        YAML_VERSION_DIRECTIVE_TOKEN
-        YAML_TAG_DIRECTIVE_TOKEN
-        YAML_DOCUMENT_START_TOKEN
-        YAML_DOCUMENT_END_TOKEN
-        YAML_BLOCK_SEQUENCE_START_TOKEN
-        YAML_BLOCK_MAPPING_START_TOKEN
-        YAML_BLOCK_END_TOKEN
-        YAML_FLOW_SEQUENCE_START_TOKEN
-        YAML_FLOW_SEQUENCE_END_TOKEN
-        YAML_FLOW_MAPPING_START_TOKEN
-        YAML_FLOW_MAPPING_END_TOKEN
-        YAML_BLOCK_ENTRY_TOKEN
-        YAML_FLOW_ENTRY_TOKEN
-        YAML_KEY_TOKEN
-        YAML_VALUE_TOKEN
-        YAML_ALIAS_TOKEN
-        YAML_ANCHOR_TOKEN
-        YAML_TAG_TOKEN
-        YAML_SCALAR_TOKEN
-    ctypedef enum yaml_event_type_t:
-        YAML_NO_EVENT
-        YAML_STREAM_START_EVENT
-        YAML_STREAM_END_EVENT
-        YAML_DOCUMENT_START_EVENT
-        YAML_DOCUMENT_END_EVENT
-        YAML_ALIAS_EVENT
-        YAML_SCALAR_EVENT
-        YAML_SEQUENCE_START_EVENT
-        YAML_SEQUENCE_END_EVENT
-        YAML_MAPPING_START_EVENT
-        YAML_MAPPING_END_EVENT
+    ctypedef enum hughml_encoding_t:
+        hughml_ANY_ENCODING
+        hughml_UTF8_ENCODING
+        hughml_UTF16LE_ENCODING
+        hughml_UTF16BE_ENCODING
+    ctypedef enum hughml_break_t:
+        hughml_ANY_BREAK
+        hughml_CR_BREAK
+        hughml_LN_BREAK
+        hughml_CRLN_BREAK
+    ctypedef enum hughml_error_type_t:
+        hughml_NO_ERROR
+        hughml_MEMORY_ERROR
+        hughml_READER_ERROR
+        hughml_SCANNER_ERROR
+        hughml_PARSER_ERROR
+        hughml_WRITER_ERROR
+        hughml_EMITTER_ERROR
+    ctypedef enum hughml_scalar_style_t:
+        hughml_ANY_SCALAR_STYLE
+        hughml_PLAIN_SCALAR_STYLE
+        hughml_SINGLE_QUOTED_SCALAR_STYLE
+        hughml_DOUBLE_QUOTED_SCALAR_STYLE
+        hughml_LITERAL_SCALAR_STYLE
+        hughml_FOLDED_SCALAR_STYLE
+    ctypedef enum hughml_sequence_style_t:
+        hughml_ANY_SEQUENCE_STYLE
+        hughml_BLOCK_SEQUENCE_STYLE
+        hughml_FLOW_SEQUENCE_STYLE
+    ctypedef enum hughml_mapping_style_t:
+        hughml_ANY_MAPPING_STYLE
+        hughml_BLOCK_MAPPING_STYLE
+        hughml_FLOW_MAPPING_STYLE
+    ctypedef enum hughml_token_type_t:
+        hughml_NO_TOKEN
+        hughml_STREAM_START_TOKEN
+        hughml_STREAM_END_TOKEN
+        hughml_VERSION_DIRECTIVE_TOKEN
+        hughml_TAG_DIRECTIVE_TOKEN
+        hughml_DOCUMENT_START_TOKEN
+        hughml_DOCUMENT_END_TOKEN
+        hughml_BLOCK_SEQUENCE_START_TOKEN
+        hughml_BLOCK_MAPPING_START_TOKEN
+        hughml_BLOCK_END_TOKEN
+        hughml_FLOW_SEQUENCE_START_TOKEN
+        hughml_FLOW_SEQUENCE_END_TOKEN
+        hughml_FLOW_MAPPING_START_TOKEN
+        hughml_FLOW_MAPPING_END_TOKEN
+        hughml_BLOCK_ENTRY_TOKEN
+        hughml_FLOW_ENTRY_TOKEN
+        hughml_KEY_TOKEN
+        hughml_VALUE_TOKEN
+        hughml_ALIAS_TOKEN
+        hughml_ANCHOR_TOKEN
+        hughml_TAG_TOKEN
+        hughml_SCALAR_TOKEN
+    ctypedef enum hughml_event_type_t:
+        hughml_NO_EVENT
+        hughml_STREAM_START_EVENT
+        hughml_STREAM_END_EVENT
+        hughml_DOCUMENT_START_EVENT
+        hughml_DOCUMENT_END_EVENT
+        hughml_ALIAS_EVENT
+        hughml_SCALAR_EVENT
+        hughml_SEQUENCE_START_EVENT
+        hughml_SEQUENCE_END_EVENT
+        hughml_MAPPING_START_EVENT
+        hughml_MAPPING_END_EVENT
 
-    ctypedef int yaml_read_handler_t(void *data, char *buffer,
+    ctypedef int hughml_read_handler_t(void *data, char *buffer,
             size_t size, size_t *size_read) except 0
 
-    ctypedef int yaml_write_handler_t(void *data, char *buffer,
+    ctypedef int hughml_write_handler_t(void *data, char *buffer,
             size_t size) except 0
 
-    ctypedef struct yaml_mark_t:
+    ctypedef struct hughml_mark_t:
         size_t index
         size_t line
         size_t column
-    ctypedef struct yaml_version_directive_t:
+    ctypedef struct hughml_version_directive_t:
         int major
         int minor
-    ctypedef struct yaml_tag_directive_t:
+    ctypedef struct hughml_tag_directive_t:
         char *handle
         char *prefix
 
-    ctypedef struct _yaml_token_stream_start_data_t:
-        yaml_encoding_t encoding
-    ctypedef struct _yaml_token_alias_data_t:
+    ctypedef struct _hughml_token_stream_start_data_t:
+        hughml_encoding_t encoding
+    ctypedef struct _hughml_token_alias_data_t:
         char *value
-    ctypedef struct _yaml_token_anchor_data_t:
+    ctypedef struct _hughml_token_anchor_data_t:
         char *value
-    ctypedef struct _yaml_token_tag_data_t:
+    ctypedef struct _hughml_token_tag_data_t:
         char *handle
         char *suffix
-    ctypedef struct _yaml_token_scalar_data_t:
+    ctypedef struct _hughml_token_scalar_data_t:
         char *value
         size_t length
-        yaml_scalar_style_t style
-    ctypedef struct _yaml_token_version_directive_data_t:
+        hughml_scalar_style_t style
+    ctypedef struct _hughml_token_version_directive_data_t:
         int major
         int minor
-    ctypedef struct _yaml_token_tag_directive_data_t:
+    ctypedef struct _hughml_token_tag_directive_data_t:
         char *handle
         char *prefix
-    ctypedef union _yaml_token_data_t:
-        _yaml_token_stream_start_data_t stream_start
-        _yaml_token_alias_data_t alias
-        _yaml_token_anchor_data_t anchor
-        _yaml_token_tag_data_t tag
-        _yaml_token_scalar_data_t scalar
-        _yaml_token_version_directive_data_t version_directive
-        _yaml_token_tag_directive_data_t tag_directive
-    ctypedef struct yaml_token_t:
-        yaml_token_type_t type
-        _yaml_token_data_t data
-        yaml_mark_t start_mark
-        yaml_mark_t end_mark
+    ctypedef union _hughml_token_data_t:
+        _hughml_token_stream_start_data_t stream_start
+        _hughml_token_alias_data_t alias
+        _hughml_token_anchor_data_t anchor
+        _hughml_token_tag_data_t tag
+        _hughml_token_scalar_data_t scalar
+        _hughml_token_version_directive_data_t version_directive
+        _hughml_token_tag_directive_data_t tag_directive
+    ctypedef struct hughml_token_t:
+        hughml_token_type_t type
+        _hughml_token_data_t data
+        hughml_mark_t start_mark
+        hughml_mark_t end_mark
 
-    ctypedef struct _yaml_event_stream_start_data_t:
-        yaml_encoding_t encoding
-    ctypedef struct _yaml_event_document_start_data_tag_directives_t:
-        yaml_tag_directive_t *start
-        yaml_tag_directive_t *end
-    ctypedef struct _yaml_event_document_start_data_t:
-        yaml_version_directive_t *version_directive
-        _yaml_event_document_start_data_tag_directives_t tag_directives
+    ctypedef struct _hughml_event_stream_start_data_t:
+        hughml_encoding_t encoding
+    ctypedef struct _hughml_event_document_start_data_tag_directives_t:
+        hughml_tag_directive_t *start
+        hughml_tag_directive_t *end
+    ctypedef struct _hughml_event_document_start_data_t:
+        hughml_version_directive_t *version_directive
+        _hughml_event_document_start_data_tag_directives_t tag_directives
         int implicit
-    ctypedef struct _yaml_event_document_end_data_t:
+    ctypedef struct _hughml_event_document_end_data_t:
         int implicit
-    ctypedef struct _yaml_event_alias_data_t:
+    ctypedef struct _hughml_event_alias_data_t:
         char *anchor
-    ctypedef struct _yaml_event_scalar_data_t:
+    ctypedef struct _hughml_event_scalar_data_t:
         char *anchor
         char *tag
         char *value
         size_t length
         int plain_implicit
         int quoted_implicit
-        yaml_scalar_style_t style
-    ctypedef struct _yaml_event_sequence_start_data_t:
+        hughml_scalar_style_t style
+    ctypedef struct _hughml_event_sequence_start_data_t:
         char *anchor
         char *tag
         int implicit
-        yaml_sequence_style_t style
-    ctypedef struct _yaml_event_mapping_start_data_t:
+        hughml_sequence_style_t style
+    ctypedef struct _hughml_event_mapping_start_data_t:
         char *anchor
         char *tag
         int implicit
-        yaml_mapping_style_t style
-    ctypedef union _yaml_event_data_t:
-        _yaml_event_stream_start_data_t stream_start
-        _yaml_event_document_start_data_t document_start
-        _yaml_event_document_end_data_t document_end
-        _yaml_event_alias_data_t alias
-        _yaml_event_scalar_data_t scalar
-        _yaml_event_sequence_start_data_t sequence_start
-        _yaml_event_mapping_start_data_t mapping_start
-    ctypedef struct yaml_event_t:
-        yaml_event_type_t type
-        _yaml_event_data_t data
-        yaml_mark_t start_mark
-        yaml_mark_t end_mark
+        hughml_mapping_style_t style
+    ctypedef union _hughml_event_data_t:
+        _hughml_event_stream_start_data_t stream_start
+        _hughml_event_document_start_data_t document_start
+        _hughml_event_document_end_data_t document_end
+        _hughml_event_alias_data_t alias
+        _hughml_event_scalar_data_t scalar
+        _hughml_event_sequence_start_data_t sequence_start
+        _hughml_event_mapping_start_data_t mapping_start
+    ctypedef struct hughml_event_t:
+        hughml_event_type_t type
+        _hughml_event_data_t data
+        hughml_mark_t start_mark
+        hughml_mark_t end_mark
 
-    ctypedef struct yaml_parser_t:
-        yaml_error_type_t error
+    ctypedef struct hughml_parser_t:
+        hughml_error_type_t error
         char *problem
         size_t problem_offset
         int problem_value
-        yaml_mark_t problem_mark
+        hughml_mark_t problem_mark
         char *context
-        yaml_mark_t context_mark
+        hughml_mark_t context_mark
 
-    ctypedef struct yaml_emitter_t:
-        yaml_error_type_t error
+    ctypedef struct hughml_emitter_t:
+        hughml_error_type_t error
         char *problem
 
-    char *yaml_get_version_string()
-    void yaml_get_version(int *major, int *minor, int *patch)
+    char *hughml_get_version_string()
+    void hughml_get_version(int *major, int *minor, int *patch)
 
-    void yaml_token_delete(yaml_token_t *token)
+    void hughml_token_delete(hughml_token_t *token)
 
-    int yaml_stream_start_event_initialize(yaml_event_t *event,
-            yaml_encoding_t encoding)
-    int yaml_stream_end_event_initialize(yaml_event_t *event)
-    int yaml_document_start_event_initialize(yaml_event_t *event,
-            yaml_version_directive_t *version_directive,
-            yaml_tag_directive_t *tag_directives_start,
-            yaml_tag_directive_t *tag_directives_end,
+    int hughml_stream_start_event_initialize(hughml_event_t *event,
+            hughml_encoding_t encoding)
+    int hughml_stream_end_event_initialize(hughml_event_t *event)
+    int hughml_document_start_event_initialize(hughml_event_t *event,
+            hughml_version_directive_t *version_directive,
+            hughml_tag_directive_t *tag_directives_start,
+            hughml_tag_directive_t *tag_directives_end,
             int implicit)
-    int yaml_document_end_event_initialize(yaml_event_t *event,
+    int hughml_document_end_event_initialize(hughml_event_t *event,
             int implicit)
-    int yaml_alias_event_initialize(yaml_event_t *event, char *anchor)
-    int yaml_scalar_event_initialize(yaml_event_t *event,
+    int hughml_alias_event_initialize(hughml_event_t *event, char *anchor)
+    int hughml_scalar_event_initialize(hughml_event_t *event,
             char *anchor, char *tag, char *value, size_t length,
             int plain_implicit, int quoted_implicit,
-            yaml_scalar_style_t style)
-    int yaml_sequence_start_event_initialize(yaml_event_t *event,
-            char *anchor, char *tag, int implicit, yaml_sequence_style_t style)
-    int yaml_sequence_end_event_initialize(yaml_event_t *event)
-    int yaml_mapping_start_event_initialize(yaml_event_t *event,
-            char *anchor, char *tag, int implicit, yaml_mapping_style_t style)
-    int yaml_mapping_end_event_initialize(yaml_event_t *event)
-    void yaml_event_delete(yaml_event_t *event)
+            hughml_scalar_style_t style)
+    int hughml_sequence_start_event_initialize(hughml_event_t *event,
+            char *anchor, char *tag, int implicit, hughml_sequence_style_t style)
+    int hughml_sequence_end_event_initialize(hughml_event_t *event)
+    int hughml_mapping_start_event_initialize(hughml_event_t *event,
+            char *anchor, char *tag, int implicit, hughml_mapping_style_t style)
+    int hughml_mapping_end_event_initialize(hughml_event_t *event)
+    void hughml_event_delete(hughml_event_t *event)
 
-    int yaml_parser_initialize(yaml_parser_t *parser)
-    void yaml_parser_delete(yaml_parser_t *parser)
-    void yaml_parser_set_input_string(yaml_parser_t *parser,
+    int hughml_parser_initialize(hughml_parser_t *parser)
+    void hughml_parser_delete(hughml_parser_t *parser)
+    void hughml_parser_set_input_string(hughml_parser_t *parser,
             char *input, size_t size)
-    void yaml_parser_set_input(yaml_parser_t *parser,
-            yaml_read_handler_t *handler, void *data)
-    void yaml_parser_set_encoding(yaml_parser_t *parser,
-            yaml_encoding_t encoding)
-    int yaml_parser_scan(yaml_parser_t *parser, yaml_token_t *token) except *
-    int yaml_parser_parse(yaml_parser_t *parser, yaml_event_t *event) except *
+    void hughml_parser_set_input(hughml_parser_t *parser,
+            hughml_read_handler_t *handler, void *data)
+    void hughml_parser_set_encoding(hughml_parser_t *parser,
+            hughml_encoding_t encoding)
+    int hughml_parser_scan(hughml_parser_t *parser, hughml_token_t *token) except *
+    int hughml_parser_parse(hughml_parser_t *parser, hughml_event_t *event) except *
 
-    int yaml_emitter_initialize(yaml_emitter_t *emitter)
-    void yaml_emitter_delete(yaml_emitter_t *emitter)
-    void yaml_emitter_set_output_string(yaml_emitter_t *emitter,
+    int hughml_emitter_initialize(hughml_emitter_t *emitter)
+    void hughml_emitter_delete(hughml_emitter_t *emitter)
+    void hughml_emitter_set_output_string(hughml_emitter_t *emitter,
             char *output, size_t size, size_t *size_written)
-    void yaml_emitter_set_output(yaml_emitter_t *emitter,
-            yaml_write_handler_t *handler, void *data)
-    void yaml_emitter_set_encoding(yaml_emitter_t *emitter,
-            yaml_encoding_t encoding)
-    void yaml_emitter_set_canonical(yaml_emitter_t *emitter, int canonical)
-    void yaml_emitter_set_indent(yaml_emitter_t *emitter, int indent)
-    void yaml_emitter_set_width(yaml_emitter_t *emitter, int width)
-    void yaml_emitter_set_unicode(yaml_emitter_t *emitter, int unicode)
-    void yaml_emitter_set_break(yaml_emitter_t *emitter,
-            yaml_break_t line_break)
-    int yaml_emitter_emit(yaml_emitter_t *emitter, yaml_event_t *event) except *
-    int yaml_emitter_flush(yaml_emitter_t *emitter)
+    void hughml_emitter_set_output(hughml_emitter_t *emitter,
+            hughml_write_handler_t *handler, void *data)
+    void hughml_emitter_set_encoding(hughml_emitter_t *emitter,
+            hughml_encoding_t encoding)
+    void hughml_emitter_set_canonical(hughml_emitter_t *emitter, int canonical)
+    void hughml_emitter_set_indent(hughml_emitter_t *emitter, int indent)
+    void hughml_emitter_set_width(hughml_emitter_t *emitter, int width)
+    void hughml_emitter_set_unicode(hughml_emitter_t *emitter, int unicode)
+    void hughml_emitter_set_break(hughml_emitter_t *emitter,
+            hughml_break_t line_break)
+    int hughml_emitter_emit(hughml_emitter_t *emitter, hughml_event_t *event) except *
+    int hughml_emitter_flush(hughml_emitter_t *emitter)
 

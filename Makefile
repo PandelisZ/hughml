@@ -9,19 +9,19 @@ build:
 	${PYTHON} setup.py build ${PARAMETERS}
 
 buildext:
-	${PYTHON} setup.py --with-libyaml build ${PARAMETERS}
+	${PYTHON} setup.py --with-libhughml build ${PARAMETERS}
 
 force:
 	${PYTHON} setup.py build -f ${PARAMETERS}
 
 forceext:
-	${PYTHON} setup.py --with-libyaml build -f ${PARAMETERS}
+	${PYTHON} setup.py --with-libhughml build -f ${PARAMETERS}
 
 install:
 	${PYTHON} setup.py install ${PARAMETERS}
 
 installext:
-	${PYTHON} setup.py --with-libyaml install ${PARAMETERS}
+	${PYTHON} setup.py --with-libhughml install ${PARAMETERS}
 
 test: build
 	${PYTHON} tests/lib/test_build.py ${TEST}
@@ -34,11 +34,11 @@ testall:
 
 dist:
 	@# No longer uploading a zip file to pypi
-	@# ${PYTHON} setup.py --with-libyaml sdist --formats=zip,gztar
-	${PYTHON} setup.py --with-libyaml sdist --formats=gztar
+	@# ${PYTHON} setup.py --with-libhughml sdist --formats=zip,gztar
+	${PYTHON} setup.py --with-libhughml sdist --formats=gztar
 
 windist:
-	${PYTHON} setup.py --with-libyaml bdist_wininst
+	${PYTHON} setup.py --with-libhughml bdist_wininst
 
 clean:
-	${PYTHON} setup.py --with-libyaml clean -a
+	${PYTHON} setup.py --with-libhughml clean -a

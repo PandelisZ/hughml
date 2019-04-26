@@ -1,7 +1,7 @@
 # TODO: run in PR/test mode (larger matrix) vs "all-in-one" artifact/packaging mode
 # TODO: use dynamic matrix so PRs are multi-job and tag builds are one (consolidate artifacts)
 # TODO: consider secure credential storage for inline upload on tags? Or keep that all manual/OOB for security...
-# TODO: refactor libyaml/pyyaml tests to enable first-class output for AppVeyor
+# TODO: refactor libhughml/pyhughml tests to enable first-class output for AppVeyor
 # TODO: get version number from setup.py and/or lib(3)/__version__
 # Update-AppveyorBuild -Version $dynamic_version
 
@@ -33,15 +33,15 @@ Function Bootstrap() {
     Copy-Item -Path "C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\vcpackages\Itanium.VCPlatform.config" -Destination "C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\vcpackages\Itanium.VCPlatform.Express.config" -Force
 
     # git spews all over stderr unless we tell it not to
-    $env:GIT_REDIRECT_STDERR="2>&1"; 
+    $env:GIT_REDIRECT_STDERR="2>&1";
 
-    $libyaml_repo_url = If($env:libyaml_repo_url) { $env:libyaml_repo_url } Else { "https://github.com/yaml/libyaml.git" }
-    $libyaml_refspec = If($env:libyaml_refspec) { $env:libyaml_refspec } Else { "master" }
-    
-    Write-Output "cloning libyaml from $libyaml_repo_url / $libyaml_refspec"
+    $libhughml_repo_url = If($env:libhughml_repo_url) { $env:libhughml_repo_url } Else { "https://github.com/hughml/libhughml.git" }
+    $libhughml_refspec = If($env:libhughml_refspec) { $env:libhughml_refspec } Else { "master" }
 
-    If(-not $(Test-Path .\libyaml)) {
-        git clone -b $libyaml_refspec $libyaml_repo_url 2>&1
+    Write-Output "cloning libhughml from $libhughml_repo_url / $libhughml_refspec"
+
+    If(-not $(Test-Path .\libhughml)) {
+        git clone -b $libhughml_refspec $libhughml_repo_url 2>&1
     }
 }
 
@@ -50,7 +50,7 @@ Function Build-Wheel($python_path) {
     #$python_path = Join-Path C:\ $env:PYTHON_VER
     $python = Join-Path $python_path python.exe
 
-    Write-Output "building pyyaml wheel for $python_path"
+    Write-Output "building pyhughml wheel for $python_path"
 
     # query distutils for the VC version used to build this Python; translate to a VS version to choose the right generator
     $python_vs_buildver = & $python -c "from distutils.version import LooseVersion; from distutils.msvc9compiler import get_build_version; print(LooseVersion(str(get_build_version())).version[0])"
@@ -88,18 +88,18 @@ Function Build-Wheel($python_path) {
     # ensure required-for-build packages are present and up-to-date
     & $python -W "ignore:DEPRECATION" -m pip install --upgrade cython wheel setuptools --no-warn-script-location
 
-    pushd libyaml
+    pushd libhughml
     git clean -fdx
     popd
 
-    mkdir libyaml\build
+    mkdir libhughml\build
 
-    pushd libyaml\build
-    cmake.exe -G $python_cmake_generator -DYAML_STATIC_LIB_NAME=yaml ..
+    pushd libhughml\build
+    cmake.exe -G $python_cmake_generator -Dhughml_STATIC_LIB_NAME=hughml ..
     cmake.exe --build . --config Release
     popd
 
-    & $python setup.py --with-libyaml build_ext -I libyaml\include -L libyaml\build\Release -D YAML_DECLARE_STATIC build test bdist_wheel
+    & $python setup.py --with-libhughml build_ext -I libhughml\include -L libhughml\build\Release -D hughml_DECLARE_STATIC build test bdist_wheel
 }
 
 Function Upload-Artifacts() {

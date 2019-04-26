@@ -1,6 +1,6 @@
 # Explicitly specify default settings:
 %TAG !     !
-%TAG !!    tag:yaml.org,2002:
+%TAG !!    tag:hughml.org,2002:
 # Named handles have no default:
 %TAG !o! tag:ben-kiki.org,2000:
 ---
